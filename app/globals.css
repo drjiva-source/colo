@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/*  CONFIGURACIÓN DE TEMA (Tailwind v4) */
+@theme {
+  /*  Rojo de Marca (Urgencia y Noticias) */
+  --color-primary: #E3000F;          /* Rojo intenso estándar de noticias */
+  --color-primary-foreground: #FFFFFF;
+
+  /*  Colores Base (Modo Claro) */
+  --color-background: #FFFFFF;
+  --color-foreground: #0F172A;       /* Slate 900 (Negro suave para lectura) */
+  --color-muted: #64748B;            /* Gris para metadatos/fechas */
+  --color-border: #E2E8F0;
+  --color-card: #FFFFFF;
+
+  /*  Variantes Modo Oscuro */
+  --color-background-dark: #020617;  /* Slate 950 */
+  --color-foreground-dark: #F8FAFC;
+  --color-border-dark: #1E293B;
+  --color-card-dark: #0F172A;
+}
+
+/*  Variables Globales */
+:root {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+}
+
+/*  Modo Oscuro Automático (Sistema) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: var(--color-foreground-dark);
+    background-color: var(--color-background-dark);
+    --color-border: var(--color-border-dark);
+    --color-card: var(--color-card-dark);
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
