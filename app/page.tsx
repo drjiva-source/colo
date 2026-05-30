@@ -31,7 +31,7 @@ export default async function HomePage() {
       <div className="lg:col-span-8 flex flex-col gap-10">
         
         {/* 1. Noticia Destacada (Hero) */}
-        <FeaturedNewsHero news={featured} />
+        {featured && <FeaturedNewsHero news={featured} />}
 
         {/* 2. Barra de Categorías */}
         <CategoriesBar categories={categories} />
