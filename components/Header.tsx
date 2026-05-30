@@ -82,7 +82,7 @@ export function Header() {
 
       {/* Menú Desplegable (Móvil) */}
       {isMenuOpen && (
-        <div className="absolute top-[100px] left-0 w-full bg-card border-b border-border shadow-lg z-50 p-4 md:hidden">
+        <div className="absolute top-100px left-0 w-full bg-card border-b border-border shadow-lg z-50 p-4 md:hidden">
           <nav className="flex flex-col gap-4 text-center">
             {quickLinks.map((link) => (
               <Link 

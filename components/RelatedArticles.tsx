@@ -35,7 +35,7 @@ export function RelatedArticles({ title = "Artículos Relacionados", items }: Pr
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300" />
+                <div className="w-full h-full bg-linear-to-br from-slate-200 to-slate-300" />
               )}
               <span className="absolute top-3 left-3 px-2 py-0.5 bg-white/90 backdrop-blur text-[10px] font-bold text-slate-700 rounded uppercase tracking-wide shadow-sm">
                 {item.category}
@@ -43,7 +43,7 @@ export function RelatedArticles({ title = "Artículos Relacionados", items }: Pr
             </div>
 
             {/* Título */}
-            <div className="p-4 flex-grow flex items-center">
+            <div className="p-4 grow flex items-center">
               <h4 className="font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
                 {item.title}
               </h4>
