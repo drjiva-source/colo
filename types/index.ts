@@ -12,7 +12,7 @@ export type Category =
 export interface NewsArticle {
   slug: string;          // URL única (ej: argentina-gana)
   title: string;         // Título principal
-  category: Category;    // Categoría
+  category: string;    // Categoría
   description: string;   // Resumen corto (para la Home)
   content?: string;      // Contenido completo (para la página de detalle)
   image?: string;        // URL de la imagen (opcional)
