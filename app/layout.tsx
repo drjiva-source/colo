@@ -51,7 +51,7 @@ export default function RootLayout({
         <Header />
 
         {/*  CONTENIDO PRINCIPAL */}
-        <main className="flex-grow w-full max-w-7xl mx-auto px-4 py-12 lg:py-16">
+        <main className="grow w-full max-w-7xl mx-auto px-4 py-12 lg:py-16">
           {children}
         </main>
 
