@@ -1,24 +1,16 @@
 // next.config.ts
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "cdn.sanity.io",  // ✅ Solo Sanity
+        pathname: "/images/**",
       },
     ],
   },
-  allowedDevOrigins: ['192.168.100.5', 'localhost:3000'],
 };
 
 export default nextConfig;
-

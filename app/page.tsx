@@ -1,11 +1,11 @@
-// app/page.tsx (versión corregida)
-
+// app/page.tsx
 import {
   getFeaturedNews,
   getTrendingNews,
   getMostReadNews,
   getAllCategories,
-} from "@/lib/news";
+  urlFor,
+} from "@/lib/sanity/queries";
 
 import { FeaturedNewsHero } from "@/components/FeaturedNewsHero";
 import { NewsSection } from "@/components/NewsSection";
@@ -13,34 +13,32 @@ import { CategoriesBar } from "@/components/CategoriesBar";
 import { AdBanner } from "@/components/AdBanner";
 
 export default async function HomePage() {
-  // ✅ Las funciones son síncronas: las llamamos directamente
-  // Usamos try/catch por seguridad (aunque no deberían fallar)
-  
   let featured = null;
   let trending: any[] = [];
   let mostRead: any[] = [];
   let categories: any[] = [];
 
   try {
-    featured = getFeaturedNews();
+    // ✅ IMPORTANTE: Usar AWAIT porque las funciones son async
+    featured = await getFeaturedNews();
   } catch (err) {
     console.error("❌ Error en getFeaturedNews:", err);
   }
 
   try {
-    trending = getTrendingNews(3);
+    trending = await getTrendingNews(3);
   } catch (err) {
     console.error("❌ Error en getTrendingNews:", err);
   }
 
   try {
-    mostRead = getMostReadNews(3);
+    mostRead = await getMostReadNews(3);
   } catch (err) {
     console.error("❌ Error en getMostReadNews:", err);
   }
 
   try {
-    categories = getAllCategories();
+    categories = await getAllCategories();
   } catch (err) {
     console.error("❌ Error en getAllCategories:", err);
   }
@@ -64,7 +62,10 @@ export default async function HomePage() {
         <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
           <h3 className="text-lg font-bold text-foreground mb-2">📬 Suscríbete</h3>
           <p className="text-sm text-muted mb-4">Recibe noticias cada mañana.</p>
-          <form className="flex flex-col gap-3"><input type="email" placeholder="tu@email.com" className="w-full bg-background border border-border rounded px-4 py-2" /><button className="w-full bg-primary text-white py-2 rounded">Suscribirse</button></form>
+          <form className="flex flex-col gap-3">
+            <input type="email" placeholder="tu@email.com" className="w-full bg-background border border-border rounded px-4 py-2" />
+            <button className="w-full bg-primary text-white py-2 rounded">Suscribirse</button>
+          </form>
         </div>
         <AdBanner variant="skyscraper" label="Publicidad" imageSrc="/ads/crishop-300x600.jpg" href="https://crishop.com" />
       </aside>

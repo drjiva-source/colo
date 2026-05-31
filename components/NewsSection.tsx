@@ -1,73 +1,80 @@
 // components/NewsSection.tsx
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { truncateText } from "@/lib/utils";
+import Image from 'next/image';
+import Link from 'next/link';
+import { urlFor } from '@/lib/sanity/queries';
 
-type NewsItem = {
-  slug: string;
-  title: string;
-  description?: string;
-  image?: string;
-  category?: string;
-};
-
-type Props = {
-  title: string;
-  items: NewsItem[];
-};
-
-export function NewsSection({ title, items }: Props) {
+// ✅ Validación de imagen segura
+function isValidImage(image: any): boolean {
   return (
-    <section className="flex flex-col gap-6">
+    image?.asset?._ref && 
+    typeof image.asset._ref === 'string' && 
+    image.asset._ref.includes('-')
+  );
+}
+
+interface NewsItem {
+  _id: string;
+  title: string;
+  slug: string;
+  category?: string;
+  description?: string;
+  image?: any;
+  score?: number;
+  views?: number;
+}
+
+export function NewsSection({ 
+  title, 
+  items 
+}: { 
+  title: string; 
+  items: NewsItem[] 
+}) {
+  if (!items?.length) return null;
+
+  return (
+    <section>
+      <h2 className="text-2xl font-bold mb-6">{title}</h2>
       
-      {/* Título de sección con acento rojo */}
-      <h2 className="text-2xl font-bold text-foreground border-l-4 border-primary pl-4">
-        {title}
-      </h2>
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid gap-6 md:grid-cols-2">
         {items.map((item) => (
-          <Link
-            key={item.slug}
-            href={`/news/${item.slug}`}
-            className="group block bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-border"
-          >
-            {/* Imagen optimizada */}
-            <div className="relative h-48 bg-muted/20 overflow-hidden">
-              {item.image ? (
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              ) : (
-                /* Fallback con tema rojo */
-                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5" />
-              )}
+          <article key={item._id} className="group">
+            <Link href={`/news/${item.slug}`} className="block">
+              <div className="relative h-48 bg-muted/20 overflow-hidden rounded-xl">
+                {/* ✅ Imagen segura */}
+                {item.image && isValidImage(item.image) ? (
+                  <Image
+                    src={urlFor(item.image).width(400).height(200).url()}
+                    alt={item.title || 'Noticia'}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400 text-sm">Sin imagen</span>
+                  </div>
+                )}
+              </div>
               
-              {/* Badge de categoría */}
-              {item.category && (
-                <span className="absolute top-3 left-3 px-2 py-1 bg-primary text-primary-foreground text-[10px] font-bold rounded uppercase tracking-wide shadow-sm">
-                  {item.category}
-                </span>
-              )}
-            </div>
-
-            {/* Contenido de la tarjeta */}
-            <div className="p-5">
-              <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
-                {item.title}
-              </h3>
-              {item.description && (
-                <p className="text-sm text-muted line-clamp-2">
-                  {truncateText(item.description, 120)}
-                </p>
-              )}
-            </div>
-          </Link>
+              <div className="mt-3">
+                {item.category && (
+                  <span className="text-xs font-semibold text-primary">
+                    {item.category}
+                  </span>
+                )}
+                <h3 className="font-bold text-lg group-hover:text-primary transition-colors">
+                  {item.title}
+                </h3>
+                {item.description && (
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {item.description}
+                  </p>
+                )}
+              </div>
+            </Link>
+          </article>
         ))}
       </div>
     </section>
