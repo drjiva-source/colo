@@ -11,6 +11,7 @@ import { FeaturedNewsHero } from "@/components/FeaturedNewsHero";
 import { NewsSection } from "@/components/NewsSection";
 import { CategoriesBar } from "@/components/CategoriesBar";
 import { AdBanner } from "@/components/AdBanner";
+import { Newsletter } from "@/components/Newsletter";
 
 export default async function HomePage() {
   let featured = null;
@@ -19,7 +20,6 @@ export default async function HomePage() {
   let categories: any[] = [];
 
   try {
-    // ✅ IMPORTANTE: Usar AWAIT porque las funciones son async
     featured = await getFeaturedNews();
   } catch (err) {
     console.error("❌ Error en getFeaturedNews:", err);
@@ -57,17 +57,25 @@ export default async function HomePage() {
         <NewsSection title="Tendencias" items={trending} />
         <NewsSection title="Más Leídas" items={mostRead} />
       </div>
+      
+      {/* ✅ SIDEBAR CORREGIDO */}
       <aside className="lg:col-span-4 flex flex-col gap-8">
-        <AdBanner variant="rectangle" label="Patrocinado" imageSrc="/ads/maquinagro-300x250.jpg" href="https://maquinagro.com.ar" />
-        <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
-          <h3 className="text-lg font-bold text-foreground mb-2">📬 Suscríbete</h3>
-          <p className="text-sm text-muted mb-4">Recibe noticias cada mañana.</p>
-          <form className="flex flex-col gap-3">
-            <input type="email" placeholder="tu@email.com" className="w-full bg-background border border-border rounded px-4 py-2" />
-            <button className="w-full bg-primary text-white py-2 rounded">Suscribirse</button>
-          </form>
-        </div>
-        <AdBanner variant="skyscraper" label="Publicidad" imageSrc="/ads/crishop-300x600.jpg" href="https://crishop.com" />
+        <AdBanner 
+          variant="rectangle" 
+          label="Patrocinado" 
+          imageSrc="/ads/maquinagro-300x250.jpg" 
+          href="https://maquinagro.com.ar" 
+        />
+        
+        {/* ✅ Newsletter único (sin form duplicado) */}
+        <Newsletter />
+        
+        <AdBanner 
+          variant="skyscraper" 
+          label="Publicidad" 
+          imageSrc="/ads/crishop-300x600.jpg" 
+          href="https://crishop.com" 
+        />
       </aside>
     </div>
   );
