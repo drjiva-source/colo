@@ -3,49 +3,84 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-border bg-card">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-blue-950 text-white">
+      {/*  Sección Principal */}
+      <div className="container mx-auto px-4 py-12 lg:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           
-          {/* 🔹 Marca & Descripción */}
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="bg-primary text-primary-foreground p-1 rounded font-bold text-lg">CN</div>
-              <span className="font-bold text-xl text-foreground">Colo News</span>
+          {/* 🔹 Columna 1: Marca */}
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="flex flex-col gap-2 group">
+              <span className="text-2xl font-extrabold tracking-tight group-hover:text-blue-400 transition-colors">
+                EL COLO <span className="text-blue-500">SIN FILTRO</span>
+              </span>
+              <span className="text-xs text-blue-200/70 font-medium tracking-widest uppercase">
+                El Colorado - Noticias
+              </span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Tu fuente confiable de noticias en Argentina. Información actualizada las 24 horas.
+            <p className="mt-4 text-sm text-blue-100/60 leading-relaxed max-w-xs">
+              Periodismo independiente, directo y sin censura. Tu fuente de información confiable en la región.
             </p>
           </div>
 
-          {/*  Enlaces Rápidos */}
+          {/* 🔹 Columna 2: Secciones */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Secciones</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/" className="hover:text-primary transition">Inicio</Link></li>
-              <li><Link href="/categoria/deportes" className="hover:text-primary transition">Deportes</Link></li>
-              <li><Link href="/categoria/politica" className="hover:text-primary transition">Política</Link></li>
-              <li><Link href="/categoria/economia" className="hover:text-primary transition">Economía</Link></li>
+            <h3 className="text-sm font-bold uppercase tracking-widest text-blue-300 mb-4">
+              Secciones
+            </h3>
+            <ul className="space-y-3 text-sm text-blue-100/70">
+              <li><Link href="/" className="hover:text-white hover:underline transition">Inicio</Link></li>
+              <li><Link href="/categoria/deportes" className="hover:text-white hover:underline transition">Deportes</Link></li>
+              <li><Link href="/categoria/politica" className="hover:text-white hover:underline transition">Política</Link></li>
+              <li><Link href="/categoria/economia" className="hover:text-white hover:underline transition">Economía</Link></li>
+              <li><Link href="/categoria/sociedad" className="hover:text-white hover:underline transition">Sociedad</Link></li>
             </ul>
           </div>
 
-          {/*  Legal & Redes */}
+          {/* 🔹 Columna 3: Institucional */}
           <div>
-            <h3 className="font-semibold text-foreground mb-4">Síguenos</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="https://instagram.com/tu_usuario" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition">Instagram</a></li>
-              <li><a href="https://twitter.com/tu_usuario" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition">X (Twitter)</a></li>
-              <li><a href="https://facebook.com/tu_pagina" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition">Facebook</a></li>
+            <h3 className="text-sm font-bold uppercase tracking-widest text-blue-300 mb-4">
+              El Canal
+            </h3>
+            <ul className="space-y-3 text-sm text-blue-100/70">
+              <li><Link href="#" className="hover:text-white hover:underline transition">Sobre Nosotros</Link></li>
+              <li><Link href="#" className="hover:text-white hover:underline transition">Contacto</Link></li>
+              <li><Link href="#" className="hover:text-white hover:underline transition">Publicidad</Link></li>
+              <li><Link href="#" className="hover:text-white hover:underline transition">Trabaja con nosotros</Link></li>
             </ul>
+          </div>
+
+          {/* 🔹 Columna 4: Redes Sociales */}
+          <div className="col-span-2 md:col-span-1">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-blue-300 mb-4">
+              Síguenos
+            </h3>
+            <div className="flex items-center gap-4">
+              {/* 🔵 Instagram */}
+              <a href="https://instagram.com/tu_usuario" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-blue-600 hover:scale-110 transition-all duration-300">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </a>
+              
+              {/*  Twitter / X */}
+              <a href="https://twitter.com/tu_usuario" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-blue-600 hover:scale-110 transition-all duration-300">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+
+              {/* 🔵 Facebook */}
+              <a href="https://facebook.com/tu_usuario" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-blue-600 hover:scale-110 transition-all duration-300">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+            </div>
           </div>
         </div>
 
-        {/*  Barra Inferior */}
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Colo News. Todos los derechos reservados.</p>
-          <div className="flex gap-4">
-            <Link href="/privacidad" className="hover:text-primary transition">Privacidad</Link>
-            <Link href="/terminos" className="hover:text-primary transition">Términos</Link>
+        {/* 🔹 Barra Inferior (Copyright) */}
+        <div className="mt-12 pt-8 border-t border-blue-800/50 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-blue-300/50">
+          <p>© {new Date().getFullYear()} El Colo Sin Filtro. Todos los derechos reservados.</p>
+          <div className="flex gap-6">
+            <Link href="#" className="hover:text-white transition">Política de Privacidad</Link>
+            <Link href="#" className="hover:text-white transition">Términos de Uso</Link>
+            <Link href="#" className="hover:text-white transition">Mapa del Sitio</Link>
           </div>
         </div>
       </div>
