@@ -1,31 +1,51 @@
 // app/layout.tsx
-
-import { Inter, Playfair_Display } from "next/font/google";
-import { siteConfig } from "@/config/site";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { GoogleAnalytics } from "@/components/GoogleAnalytics"; // 👈 Importamos
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
-// Configuración de Fuentes
-const inter = Inter({ 
-  subsets: ["latin"], 
-  variable: "--font-inter" 
+// 🔹 Fuente optimizada (puedes cambiarla si usas otra)
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
 });
 
-const playfair = Playfair_Display({ 
-  subsets: ["latin"], 
-  variable: "--font-playfair" 
-});
-
-// Metadatos Globales
-export const metadata = {
+// 🔹 Metadatos globales (SEO + OpenGraph)
+export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
+    default: "Colo News | Noticias de Argentina",
+    template: "%s | Colo News",
   },
-  description: siteConfig.description,
-  metadataBase: new URL(siteConfig.url),
+  description: "Portal de noticias actualizado con las últimas novedades en deportes, política, economía y más.",
+  keywords: ["noticias", "argentina", "deportes", "política", "economía", "actualidad", "sanity cms"],
+  authors: [{ name: "Colo News" }],
+  openGraph: {
+    title: "Colo News",
+    description: "Tu fuente confiable de noticias en Argentina.",
+    url: "https://colo-jwab.vercel.app",
+    siteName: "Colo News",
+    locale: "es_AR",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.jpg", // 👈 Crea esta imagen en /public/ (1200x630px)
+        width: 1200,
+        height: 630,
+        alt: "Colo News - Portada",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Colo News",
+    description: "Tu fuente confiable de noticias en Argentina.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -33,34 +53,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Solo cargamos GA si tenemos el ID (producción)
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
   return (
-    <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
-      <head>
-        {/* Preconnect para mejorar rendimiento de GA */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-      </head>
-      <body 
-        className="bg-gray-50 text-gray-900 antialiased min-h-screen flex flex-col"
-        suppressHydrationWarning
-      >
+    <html lang="es" className="scroll-smooth">
+      <body className={`${inter.variable} ${inter.className} antialiased bg-background text-foreground`}>
+        {/* 🔹 Tu Header/Navbar puede ir aquí si lo tienes */}
         
-        {/* 🔝 HEADER */}
-        <Header />
+        {/* 🔹 Contenido de las páginas */}
+        {children}
+        
+        {/* 🔹 Tu Footer puede ir aquí si lo tienes */}
 
-        {/*  CONTENIDO PRINCIPAL */}
-        <main className="grow w-full max-w-7xl mx-auto px-4 py-12 lg:py-16">
-          {children}
-        </main>
-
-        {/* 🔻 FOOTER */}
-        <Footer />
-
-        {/* 📊 GOOGLE ANALYTICS (Solo si existe el ID) */}
-        {gaId && <GoogleAnalytics GA_MEASUREMENT_ID={gaId} />}
-
+        {/* 🔍 Vercel Analytics (solo se activa en producción, 0 impacto en local) */}
+        <Analytics />
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 // config/site.ts
 
 export const siteConfig = {
-  name: "EL COLORADO NOTICIAS",
+  name: "EL COLO SIN FILTRO",
   description: "El Colorado - Formosa",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   links: {
