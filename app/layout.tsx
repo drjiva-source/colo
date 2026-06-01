@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Header } from "@/components/Header";
+import { AdBannerTop } from "@/components/AdBannerTop";
 import { Footer } from "@/components/Footer"; // 👈 Importa el Footer
 
 const inter = Inter({
@@ -27,6 +28,12 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased bg-background text-foreground`}>
         
         <Header />
+         {/* 🔹 Banner Publicitario Full-Width */}
+        <AdBannerTop 
+          imageSrc="/ads/banner-top-728x90.jpg"  // 👈 Tu imagen en /public/ads/
+          href="https://tu-cliente-o-patrocinante.com"
+          label="Patrocinado"
+        />
         
         <main className="container mx-auto py-8 px-4 min-h-screen">
           {children}
