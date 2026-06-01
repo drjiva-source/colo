@@ -32,7 +32,7 @@ export default function RootLayout({
         <AdBannerTop 
           imageSrc="/ads/banner-top-728x90.jpg"  // 👈 Tu imagen en /public/ads/
           href="https://tu-cliente-o-patrocinante.com"
-          label="Patrocinado"
+          label="Publicidad"
         />
         
         <main className="container mx-auto py-8 px-4 min-h-screen">
