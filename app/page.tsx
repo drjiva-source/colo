@@ -58,8 +58,8 @@ export default async function HomePage() {
         <AdBanner 
           variant="rectangle" 
           label="Patrocinado" 
-          imageSrc="/ads/maquinagro-300x250.jpg" 
-          href="https://maquinagro.com.ar" 
+          imageSrc="/ads/mara.jpg" 
+          href="https://maradeohogar.com.ar" 
         />
         
         {/* Widget de Efemérides */}
