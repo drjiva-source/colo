@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { CATEGORIES } from "@/lib/constants";
+import { CATEGORIES } from "@/lib/constants"; // ✅ Import correcto
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -14,7 +14,7 @@ export function Header() {
       <header className="sticky top-0 z-50 w-full bg-red-600 text-white shadow-md">
         <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
           
-          {/*  Lado Izquierdo: Menú + Logo + Títulos */}
+          {/* Lado Izquierdo: Menú + Logo + Títulos */}
           <div className="flex items-center gap-3 md:gap-4">
             
             {/* Menú Hamburguesa (Móvil) */}
@@ -54,7 +54,7 @@ export function Header() {
             </Link>
           </div>
 
-          {/* 🔹 Navegación Desktop */}
+          {/* Navegación Desktop */}
           <nav className="hidden lg:flex items-center gap-1">
             {CATEGORIES.map((cat) => (
               <Link
@@ -66,7 +66,7 @@ export function Header() {
               </Link>
             ))}
             
-            {/* ✅ Link de Efemérides (Desktop) */}
+            {/* Link de Efemérides */}
             <Link
               href="/efemerides"
               className="px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-red-700 rounded-md transition-colors flex items-center gap-1"
@@ -75,7 +75,7 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* 🔹 Lado Derecho: Búsqueda y Usuario */}
+          {/* Lado Derecho: Búsqueda y Usuario */}
           <div className="flex items-center gap-2 md:gap-4">
             <button className="p-2 hover:bg-red-700 rounded-full transition" aria-label="Buscar">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -92,7 +92,7 @@ export function Header() {
           </div>
         </div>
 
-        {/* 🔹 Menú Móvil Desplegable */}
+        {/* Menú Móvil Desplegable */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-red-700 border-t border-red-800 px-4 py-4 space-y-1">
             {CATEGORIES.map((cat) => (
@@ -106,7 +106,7 @@ export function Header() {
               </Link>
             ))}
             
-            {/* ✅ Link de Efemérides (Móvil) */}
+            {/* Link de Efemérides (Móvil) */}
             <Link
               href="/efemerides"
               className="block px-3 py-3 text-sm font-medium text-white hover:bg-red-800 rounded-md transition-colors border-b border-red-600/50 last:border-0 flex items-center gap-2"
