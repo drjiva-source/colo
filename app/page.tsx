@@ -12,6 +12,7 @@ import { NewsSection } from "@/components/NewsSection";
 import { CategoriesBar } from "@/components/CategoriesBar";
 import { AdBanner } from "@/components/AdBanner";
 import { Newsletter } from "@/components/Newsletter";
+import { EfemeridesWidget } from "@/components/EfemeridesWidget";
 
 export default async function HomePage() {
   let featured = null;
@@ -45,6 +46,8 @@ export default async function HomePage() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      
+      {/* 🔹 COLUMNA IZQUIERDA: Contenido Principal */}
       <div className="lg:col-span-8 flex flex-col gap-10">
         {featured ? (
           <FeaturedNewsHero news={featured} />
@@ -58,8 +61,10 @@ export default async function HomePage() {
         <NewsSection title="Más Leídas" items={mostRead} />
       </div>
       
-      {/* ✅ SIDEBAR CORREGIDO */}
+      {/* 🔹 COLUMNA DERECHA: Sidebar (UN SOLO aside) */}
       <aside className="lg:col-span-4 flex flex-col gap-8">
+        
+        {/* Banner Superior */}
         <AdBanner 
           variant="rectangle" 
           label="Patrocinado" 
@@ -67,15 +72,20 @@ export default async function HomePage() {
           href="https://maquinagro.com.ar" 
         />
         
-        {/* ✅ Newsletter único (sin form duplicado) */}
+        {/* ✅ Widget de Efemérides (NUEVO) */}
+        <EfemeridesWidget />
+        
+        {/* ✅ Newsletter (único, sin duplicar) */}
         <Newsletter />
         
+        {/* Banner Inferior */}
         <AdBanner 
           variant="skyscraper" 
           label="Publicidad" 
           imageSrc="/ads/crishop-300x600.jpg" 
           href="https://crishop.com" 
         />
+        
       </aside>
     </div>
   );
