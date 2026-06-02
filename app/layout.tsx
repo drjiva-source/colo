@@ -5,7 +5,8 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Header } from "@/components/Header";
 import { AdBannerTop } from "@/components/AdBannerTop";
-import { Footer } from "@/components/Footer"; // 👈 Importa el Footer
+import { Footer } from "@/components/Footer";
+import { RadioPlayer } from "@/components/RadioPlayer"; // 👈 Import del reproductor
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,18 +29,23 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased bg-background text-foreground`}>
         
         <Header />
-         {/* 🔹 Banner Publicitario Full-Width */}
+        
+        {/* 🔹 Banner Publicitario Full-Width */}
         <AdBannerTop 
-          imageSrc="/ads/banner-top-728x90.jpg"  // 👈 Tu imagen en /public/ads/
+          imageSrc="/ads/banner-top-728x90.jpg"
           href="https://tu-cliente-o-patrocinante.com"
           label="Publicidad"
         />
         
-        <main className="container mx-auto py-8 px-4 min-h-screen">
+        {/* ✅ pb-20 agrega espacio para que el reproductor fijo no tape contenido */}
+        <main className="container mx-auto py-8 px-4 min-h-screen pb-20">
           {children}
         </main>
         
-        <Footer /> {/* 👈 Aquí se renderiza el footer en TODAS las páginas */}
+        <Footer />
+        
+        {/* 🔊 Reproductor de Radio Fijo (siempre visible) */}
+        <RadioPlayer />
         
         <Analytics />
       </body>
