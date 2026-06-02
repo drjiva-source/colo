@@ -3,13 +3,10 @@ import {
   getFeaturedNews,
   getTrendingNews,
   getMostReadNews,
-  getAllCategories,
-  urlFor,
 } from "@/lib/sanity/queries";
 
 import { FeaturedNewsHero } from "@/components/FeaturedNewsHero";
 import { NewsSection } from "@/components/NewsSection";
-import { CategoriesBar } from "@/components/CategoriesBar";
 import { AdBanner } from "@/components/AdBanner";
 import { Newsletter } from "@/components/Newsletter";
 import { EfemeridesWidget } from "@/components/EfemeridesWidget";
@@ -18,7 +15,6 @@ export default async function HomePage() {
   let featured = null;
   let trending: any[] = [];
   let mostRead: any[] = [];
-  let categories: any[] = [];
 
   try {
     featured = await getFeaturedNews();
@@ -38,12 +34,6 @@ export default async function HomePage() {
     console.error("❌ Error en getMostReadNews:", err);
   }
 
-  try {
-    categories = await getAllCategories();
-  } catch (err) {
-    console.error("❌ Error en getAllCategories:", err);
-  }
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
       
@@ -56,12 +46,12 @@ export default async function HomePage() {
             <p className="text-gray-600">Cargando noticias...</p>
           </div>
         )}
-        <CategoriesBar categories={categories} />
+        {/* ✅ CategoriesBar eliminada */}
         <NewsSection title="Tendencias" items={trending} />
         <NewsSection title="Más Leídas" items={mostRead} />
       </div>
       
-      {/* 🔹 COLUMNA DERECHA: Sidebar (UN SOLO aside) */}
+      {/* 🔹 COLUMNA DERECHA: Sidebar */}
       <aside className="lg:col-span-4 flex flex-col gap-8">
         
         {/* Banner Superior */}
@@ -72,10 +62,10 @@ export default async function HomePage() {
           href="https://maquinagro.com.ar" 
         />
         
-        {/* ✅ Widget de Efemérides (NUEVO) */}
+        {/* Widget de Efemérides */}
         <EfemeridesWidget />
         
-        {/* ✅ Newsletter (único, sin duplicar) */}
+        {/* Newsletter */}
         <Newsletter />
         
         {/* Banner Inferior */}
