@@ -32,7 +32,7 @@ export default function RootLayout({
         
         {/* 🔹 Banner Publicitario Full-Width */}
         <AdBannerTop 
-          imageSrc="/ads/banner-top-728x90.jpg"
+          imageSrc="/ads/zz2-728x90.jpg"
           href="https://tu-cliente-o-patrocinante.com"
           label="Publicidad"
         />
