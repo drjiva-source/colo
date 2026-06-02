@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { NewsCard } from "@/components/NewsCard";
 import { client } from "@/lib/sanity/client";
-import { urlFor, getNewsByCategory, type CategorySlug } from "@/lib/sanity/queries"; // ✅ Queries desde aquí
-import { CATEGORIES } from "@/lib/constants"; // ✅ CATEGORIES desde constants (¡CORREGIDO!)
+import { urlFor, getNewsByCategory } from "@/lib/sanity/queries"; // ✅ Solo funciones desde queries
+import { CATEGORIES, type CategorySlug } from "@/lib/constants"; // ✅ Types y constantes desde constants
 import type { Metadata } from "next";
 
 // ✅ Validación de imagen de Sanity
@@ -16,17 +16,9 @@ interface CategoryPageProps {
   params: Promise<{ name: string }>;
 }
 
-// 🟢 Genera rutas estáticas con fallback seguro (para build en Vercel)
+// 🟢 Genera rutas estáticas con fallback seguro
 export async function generateStaticParams() {
-  try {
-    // Usa las categorías definidas en constants
-    return CATEGORIES.map((cat) => ({
-      name: cat.slug,
-    }));
-  } catch (error) {
-    console.warn("⚠️ Fallback: No se pudieron generar static params para categorías");
-    return CATEGORIES.slice(0, 3).map((cat) => ({ name: cat.slug }));
-  }
+  return CATEGORIES.map((cat) => ({ name: cat.slug }));
 }
 
 // 🟢 SEO Dinámico
@@ -49,7 +41,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const category = CATEGORIES.find((c) => c.slug === name);
   if (!category) notFound();
 
-  // ✅ Usar la función importada desde queries
+  // ✅ Fetch de noticias usando la función importada
   let articles: any[] = [];
   try {
     articles = await getNewsByCategory(category.slug as CategorySlug, 20);
@@ -62,10 +54,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       
       {/* 🔹 Header de Categoría */}
       <div className="mb-10 border-b border-gray-200 pb-4">
-        <Link 
-          href="/" 
-          className="text-sm text-gray-500 hover:text-red-600 mb-2 inline-block transition"
-        >
+        <Link href="/" className="text-sm text-gray-500 hover:text-red-600 mb-2 inline-block transition">
           ← Volver al inicio
         </Link>
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 capitalize">
@@ -80,10 +69,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {articles.length === 0 ? (
         <div className="text-center py-20 bg-gray-50 rounded-xl border border-gray-100">
           <p className="text-gray-400 text-lg mb-4">📭 Aún no hay noticias en esta categoría.</p>
-          <Link 
-            href="/" 
-            className="text-red-600 hover:text-red-800 font-medium transition"
-          >
+          <Link href="/" className="text-red-600 hover:text-red-800 font-medium transition">
             Ver otras noticias
           </Link>
         </div>
