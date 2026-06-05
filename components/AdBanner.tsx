@@ -1,49 +1,65 @@
 // components/AdBanner.tsx
+import Link from "next/link";
+import Image from "next/image";
 
-import Image from 'next/image';
-
-type AdBannerProps = {
-  variant?: 'rectangle' | 'skyscraper';
-  imageSrc: string; // ✅ Ahora es obligatorio (sin valor por defecto)
+interface AdBannerProps {
+  variant: "leaderboard" | "skyscraper" | "rectangle";
+  imageSrc?: string;
   href?: string;
   label?: string;
-};
+}
 
-export function AdBanner({
-  variant = 'rectangle',
-  imageSrc,
-  href = '#',
-  label = 'Publicidad',
-}: AdBannerProps) {
-  const config = variant === 'skyscraper' 
-    ? { width: 300, height: 600, containerClass: 'h-[600px]' } 
-    : { width: 300, height: 250, containerClass: 'h-[250px]' };
+export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBannerProps) {
+  // Configuración de tamaños
+  const sizes = {
+    leaderboard: { w: "w-full", h: "h-[90px] max-w-[728px]", ratio: undefined },
+    skyscraper: { w: "w-[300px]", h: "h-[600px]", ratio: undefined },
+    rectangle: { w: "w-full", h: "h-[250px]", ratio: undefined },
+  };
+
+  const size = sizes[variant];
+
+  // Contenido visual
+  const content = imageSrc ? (
+    <div className="relative w-full h-full group">
+      <Image 
+        src={imageSrc} 
+        alt="Publicidad" 
+        fill 
+        className="object-cover rounded-lg shadow-sm transition-transform group-hover:scale-[1.02]" 
+      />
+    </div>
+  ) : (
+    // Placeholder "Vendible"
+    <div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 p-4 text-center gap-2">
+      <span className="text-3xl">📢</span>
+      <span className="font-bold text-gray-500 uppercase tracking-wider text-sm">Espacio Disponible</span>
+      <span className="text-xs text-gray-400">{variant === 'leaderboard' ? '728 x 90' : variant === 'skyscraper' ? '300 x 600' : '300 x 250'}</span>
+      <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded mt-2 font-medium">¡Tu marca aquí!</span>
+    </div>
+  );
+
+  // Wrapper clickable
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    href ? (
+      <Link href={href} target="_blank" rel="noopener noreferrer" className="block w-full h-full relative group">
+        {children}
+      </Link>
+    ) : (
+      <div className="block w-full h-full relative">{children}</div>
+    )
+  );
 
   return (
-    <div className="relative w-full max-w-[300px] mx-auto group">
-      <span className="absolute -top-2 left-4 z-20 px-2 py-0.5 bg-primary text-white text-[10px] font-bold uppercase tracking-wider rounded shadow-sm">
-        {label}
-      </span>
-
-      <a 
-        href={href} 
-        className="relative block w-full bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 shadow-sm hover:border-primary/50 hover:shadow-md transition-all duration-300"
-        target="_blank"
-        rel="noopener noreferrer sponsored"
-      >
-        <div className={`relative w-full ${config.containerClass}`}>
-          <Image
-            src={imageSrc}
-            alt={`Banner ${label}`}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 300px"
-            unoptimized
-          />
+    <div className={`flex flex-col gap-2 ${variant === 'skyscraper' ? 'sticky top-24' : ''}`}>
+      {/* Etiqueta pequeña */}
+      <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>
+      
+      <Wrapper>
+        <div className={`${size.w} ${size.h} overflow-hidden relative bg-white shadow-sm rounded-lg`}>
+          {content}
         </div>
-        
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-      </a>
+      </Wrapper>
     </div>
   );
 }

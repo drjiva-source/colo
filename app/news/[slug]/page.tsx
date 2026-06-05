@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { client } from "@/lib/sanity/client";
 import { urlFor } from "@/lib/sanity/queries";
+import { AdBanner } from "@/components/AdBanner"; // 👈 Import del banner
 import type { Metadata } from "next";
 
 // ✅ Validación de imagen de Sanity
@@ -28,7 +29,6 @@ export async function generateStaticParams() {
     return slugs.map((slug: string) => ({ slug }));
   } catch (error) {
     console.warn("⚠️ Fallback: No se pudieron generar static params para noticias");
-    // Fallback vacío: las páginas se generarán bajo demanda (ISR)
     return [];
   }
 }
@@ -116,6 +116,10 @@ export default async function NewsPage({ params }: NewsPageProps) {
       })
     : "Fecha desconocida";
 
+  // Normalizar categoría para comparación
+  const categorySlug = article.category?.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") || "";
+  const showInArticleAd = categorySlug === "politica" || categorySlug === "locales";
+
   return (
     <article className="max-w-4xl mx-auto px-4 py-12 min-h-screen bg-white text-gray-900">
       
@@ -175,16 +179,32 @@ export default async function NewsPage({ params }: NewsPageProps) {
         </p>
       )}
 
-      {/* 🔹 Contenido Principal */}
+      {/* 🔹 Contenido Principal CON BANNER IN-ARTICLE */}
       <div className="prose prose-lg prose-slate max-w-none mb-12 text-gray-800">
         {article.content && Array.isArray(article.content) ? (
           article.content.map((block: any, index: number) => {
             const text = block.children?.map((c: any) => c.text).join("") || "";
             if (!text.trim()) return null;
+            
             return (
-              <p key={index} className="mb-4 leading-relaxed">
-                {text}
-              </p>
+              <div key={index}>
+                <p className="mb-4 leading-relaxed">
+                  {text}
+                </p>
+                
+                {/* 📢 BANNER IN-ARTICLE - Después del 2° párrafo (index 1) */}
+                {index === 1 && showInArticleAd && (
+                  <div className="my-8 flex justify-center">
+                    <AdBanner 
+                      variant="rectangle" 
+                      label="Patrocinado"
+                      // Cuando tengas el auspiciante, descomentá:
+                      // imageSrc="/ads/estudio-juridico.jpg"
+                      // href="https://estudiojuridico.com"
+                    />
+                  </div>
+                )}
+              </div>
             );
           })
         ) : (

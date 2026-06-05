@@ -95,29 +95,35 @@ export async function getAllCategories() {
   return CATEGORIES.map(cat => ({ name: cat.name, slug: cat.slug }));
 }
 
-// 👉 Noticias por categoría específica
+// 👉 Noticias por categoría específica (VERSIÓN COMPATIBLE - SIN lower())
 export async function getNewsByCategory(categorySlug: CategorySlug, limit = 10) {
-  console.log(`🔍 [Query] getNewsByCategory - Categoría: ${categorySlug}`);
+  console.log(`🔍 [Query] getNewsByCategory - Buscando: ${categorySlug}`);
+  
+  // Mapeamos slug → nombre (ej: "locales" → "Locales")
+  const category = CATEGORIES.find(c => c.slug === categorySlug);
+  const categoryName = category?.name || categorySlug;
+
+  // Query simple y 100% compatible con todas las versiones de GROQ
+  const query = `*[_type == "news" && category == $category && defined(slug.current)] | order(_createdAt desc)[0...${limit}] {
+    _id, 
+    title, 
+    "slug": slug.current,
+    category,
+    description,
+    image,
+    score,
+    views,
+    _createdAt
+  }`;
+
   try {
-    const result = await client.fetch(
-      `*[_type == "news" && category == $category && defined(slug.current)] | order(_createdAt desc)[0...${limit}]{ 
-        _id, 
-        title, 
-        "slug": slug.current,
-        category,
-        description,
-        image,
-        score,
-        views,
-        _createdAt
-      }`,
-      { category: categorySlug },
-      { next: { revalidate: 60 } }
-    );
-    console.log(`✅ [Query] getNewsByCategory - Encontradas:`, result?.length || 0);
-    return result;
+    // revalidate: 0 para desarrollo: ve cambios al instante
+    const result = await client.fetch(query, { category: categoryName }, { next: { revalidate: 0 } });
+    
+    console.log(`✅ [Query] Noticias en "${categoryName}":`, result?.length || 0);
+    return result || [];
   } catch (error) {
-    console.error(`❌ [Query] ERROR en getNewsByCategory (${categorySlug}):`, error);
+    console.error(`❌ [Query] ERROR en getNewsByCategory:`, error);
     return [];
   }
 }
@@ -157,7 +163,6 @@ export async function getEfemeridesHoy() {
     console.log(`📅 [Query] Buscando efemérides para: ${dia}/${mes}`);
     
     // Match flexible: busca cualquier fecha que termine en "-06-03"
-    // Esto funciona con fechas completas de Sanity: "2024-06-03T00:00:00Z"
     const query = `*[_type == "efemeride" && fecha match $fecha] | order(destacada desc, _createdAt desc) {
       _id,
       titulo,
