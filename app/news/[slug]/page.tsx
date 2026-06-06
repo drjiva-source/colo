@@ -199,7 +199,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
                       variant="rectangle" 
                       label="Patrocinado"
                       // Cuando tengas el auspiciante, descomentá:
-                      // imageSrc="/ads/estudio-juridico.jpg"
+                      imageSrc="/ads/estudio-juridico.jpg"
                       // href="https://estudiojuridico.com"
                     />
                   </div>

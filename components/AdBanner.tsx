@@ -12,12 +12,18 @@ interface AdBannerProps {
 export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBannerProps) {
   // Configuración de tamaños
   const sizes = {
-    leaderboard: { w: "w-full", h: "h-[90px] max-w-[728px]", ratio: undefined },
-    skyscraper: { w: "w-[300px]", h: "h-[600px]", ratio: undefined },
-    rectangle: { w: "w-full", h: "h-[250px]", ratio: undefined },
+    leaderboard: "100vw",
+    skyscraper: "300px",
+    rectangle: "100vw",
   };
 
-  const size = sizes[variant];
+  const sizeConfig = {
+    leaderboard: { w: "w-full", h: "h-[90px] max-w-[728px]" },
+    skyscraper: { w: "w-[300px]", h: "h-[600px]" },
+    rectangle: { w: "w-full", h: "h-[250px]" },
+  };
+
+  const size = sizeConfig[variant];
 
   // Contenido visual
   const content = imageSrc ? (
@@ -26,6 +32,7 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
         src={imageSrc} 
         alt="Publicidad" 
         fill 
+        sizes={sizes[variant]} // ✅ Agregamos el prop sizes
         className="object-cover rounded-lg shadow-sm transition-transform group-hover:scale-[1.02]" 
       />
     </div>
