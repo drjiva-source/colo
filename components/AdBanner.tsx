@@ -20,7 +20,7 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
   const sizeConfig = {
     leaderboard: { w: "w-full", h: "h-[90px] max-w-[728px]" },
     skyscraper: { w: "w-[300px]", h: "h-[600px]" },
-    rectangle: { w: "w-full", h: "h-[250px]" },
+    rectangle: { w: "w-[600px]", h: "h-[250px]" },
   };
 
   const size = sizeConfig[variant];
