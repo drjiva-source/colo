@@ -10,7 +10,7 @@ export function RadioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 🔴 REEMPLAZAR CON LA URL REAL DE RADIO PARQUE FM 89.3
-  const STREAM_URL = "https://ssl.radiosnethosting.com/index.php?port=8114";
+  const STREAM_URL = "https://edge02.radiohdvivo.com/ln1049";
 
   useEffect(() => {
     if (!audioRef.current) {
@@ -72,7 +72,7 @@ export function RadioPlayer() {
           </button>
           <div className="flex flex-col min-w-0">
             <span className="text-sm font-bold leading-tight truncate">
-              📻 Radio Parque FM 89.3
+              📻 La Nación Música FM 104.9
             </span>
             <span className="text-[11px] text-white/80 truncate">
               {error ? error : isPlaying ? '🟢 Transmitiendo en vivo' : '⏸️ Pausado'}
