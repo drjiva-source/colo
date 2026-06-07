@@ -12,18 +12,15 @@ interface AdBannerProps {
 export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBannerProps) {
   
   // Configuración de tamaños
-  // Para leaderboard usamos max-w para centrarlo y que no sea gigante en PC
   const sizeConfig = {
-    leaderboard: { w: "w-full max-w-[728px] mx-auto" }, 
+    leaderboard: { w: "w-full max-w-[728px] mx-auto", h: "" }, // ← h vacío para evitar error
     skyscraper: { w: "w-[300px]", h: "h-[600px]" },
-    rectangle: { w: "w-full md:w-[400px]", h: "h-[250px]" }, // 400px en PC, completo en móvil
+    rectangle: { w: "w-full md:w-[400px]", h: "h-[250px]" },
   };
 
   const size = sizeConfig[variant];
 
   // Lógica para Leaderboard (Responsive Nativo)
-  // Usamos width/height fijos y dejamos que CSS escale la imagen proporcionalmente.
-  // Esto evita que se recorten los bordes en móviles.
   if (variant === 'leaderboard' && imageSrc) {
     return (
       <div className="flex flex-col gap-2">
@@ -35,8 +32,8 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
                 alt="Publicidad"
                 width={728}
                 height={90}
-                className="w-full h-auto" // ← Clave: Mantiene proporción y no corta
-                priority // ← Mejora la carga al ser el primer elemento visible
+                className="w-full h-auto"
+                priority
              />
            </Link>
         </div>
@@ -80,7 +77,6 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
 
   return (
     <div className={`flex flex-col gap-2 ${variant === 'skyscraper' ? 'sticky top-24' : ''}`}>
-      {/* Etiqueta pequeña */}
       {!imageSrc && <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>}
       
       <Wrapper>
