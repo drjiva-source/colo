@@ -12,48 +12,58 @@ interface AdBannerProps {
 
 export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Publicidad" }: AdBannerProps) {
   
-  // ✅ Agregamos leaderboard con valores vacíos para evitar error de TypeScript
   const sizeConfig = {
-    leaderboard: { w: "", h: "" }, // ← No se usa, pero evita el error
+    leaderboard: { w: "", h: "" },
     skyscraper: { w: "w-[300px]", h: "h-[600px]" },
     rectangle: { w: "w-full md:w-[400px]", h: "h-[250px]" },
   };
 
   const size = sizeConfig[variant];
 
-  // 👉 LÓGICA LEADERBOARD (Responsive: Desktop O Móvil, NO ambos)
+  // 👉 LÓGICA LEADERBOARD
   if (variant === 'leaderboard') {
     return (
       <div className="w-full max-w-[728px] mx-auto px-2">
-        <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center block">{label}</span>
+        <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center block mb-2">{label}</span>
         
-        {/* Desktop: 728x90 - SOLO se muestra en md+ */}
-        <div className="hidden md:block">
-          <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
-            <Image
-              src={imageSrc || "/ads/placeholder-leaderboard.png"}
-              alt="Publicidad Desktop"
-              width={728}
-              height={90}
-              className="w-full h-auto rounded-lg shadow-sm"
-              priority
-            />
-          </Link>
-        </div>
+        {/* Desktop: 728x90 - SOLO desktop, SOLO si existe imageSrc */}
+        {imageSrc && (
+          <div className="hidden md:block">
+            <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
+              <Image
+                src={imageSrc}
+                alt="Publicidad Desktop"
+                width={728}
+                height={90}
+                className="w-full h-auto rounded-lg shadow-sm"
+                priority
+              />
+            </Link>
+          </div>
+        )}
 
-        {/* Móvil: 320x100 - SOLO se muestra en < md */}
-        <div className="block md:hidden">
-          <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
-            <Image
-              src={mobileImageSrc || imageSrc || "/ads/placeholder-leaderboard.png"}
-              alt="Publicidad Móvil"
-              width={320}
-              height={100}
-              className="w-full h-auto rounded-lg shadow-sm"
-              priority
-            />
-          </Link>
-        </div>
+        {/* Móvil: 320x100 - SOLO móvil, SOLO si existe mobileImageSrc */}
+        {mobileImageSrc && (
+          <div className="block md:hidden">
+            <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
+              <Image
+                src={mobileImageSrc}
+                alt="Publicidad Móvil"
+                width={320}
+                height={100}
+                className="w-full h-auto rounded-lg shadow-sm"
+                priority
+              />
+            </Link>
+          </div>
+        )}
+
+        {/* Fallback: Si no hay ninguna imagen, mostrar placeholder gris */}
+        {!imageSrc && !mobileImageSrc && (
+          <div className="w-full h-[90px] md:h-[90px] bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
+            <span className="text-sm font-medium">Espacio disponible 728x90</span>
+          </div>
+        )}
       </div>
     );
   }
