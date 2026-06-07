@@ -32,7 +32,7 @@ export default function RootLayout({
         <Header />
         
         {/*  Banner Leaderboard (Solo en este archivo) */}
-        <div className="w-full flex justify-center py-2 bg-gray-50">
+        <div className="w-full bg-gray-50 px-0">
           <AdBanner 
             variant="leaderboard"
             imageSrc="/ads/zz3-728x90.jpg"      // ✅ Desktop

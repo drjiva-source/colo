@@ -28,7 +28,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
         
         {/* 🖥️ DESKTOP: Se oculta siempre en móvil, se muestra SIEMPRE en pantallas md+ */}
         {imageSrc && (
-          <div className="hidden md:!block w-full max-w-[728px]">
+          <div className="hidden md:!block w-full max-w-[1280px]">
             <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
               <Image
                 src={imageSrc}
