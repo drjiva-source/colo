@@ -4,9 +4,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Header } from "@/components/Header";
-import { AdBannerTop } from "@/components/AdBannerTop";
+import { AdBanner } from "@/components/AdBanner"; // 👈 Cambiado: AdBannerTop → AdBanner
 import { Footer } from "@/components/Footer";
-import { RadioPlayer } from "@/components/RadioPlayer"; // 👈 Import del reproductor
+import { RadioPlayer } from "@/components/RadioPlayer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,21 +30,21 @@ export default function RootLayout({
         
         <Header />
         
-        {/* 🔹 Banner Publicitario Full-Width */}
-        <AdBannerTop 
-          imageSrc="/ads/zz3-728x90.jpg"
+        {/* 🔹 Banner Publicitario Full-Width - AHORA CON AdBanner RESPONSIVE */}
+        <AdBanner 
+          variant="leaderboard"              // ← Obligatorio
+          imageSrc="/ads/zz3-728x90.jpg"     // ← Desktop (728x90)
+          mobileImageSrc="/ads/zz3-320x100.jpg" // ← Móvil (320x100)
           href="https://tu-cliente-o-patrocinante.com"
           label="Publicidad"
         />
         
-        {/* ✅ pb-20 agrega espacio para que el reproductor fijo no tape contenido */}
         <main className="container mx-auto py-8 px-4 min-h-screen pb-20">
           {children}
         </main>
         
         <Footer />
         
-        {/* 🔊 Reproductor de Radio Fijo (siempre visible) */}
         <RadioPlayer />
         
         <Analytics />
