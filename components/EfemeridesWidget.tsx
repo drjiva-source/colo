@@ -17,9 +17,7 @@ export async function EfemeridesWidget() {
           <p className="text-sm text-blue-600">
             No hay efemérides cargadas para hoy
           </p>
-          <p className="text-xs text-blue-500 mt-2">
-            (Cargá una en Sanity con fecha de hoy)
-          </p>
+          
           <a 
             href="/efemerides" 
             className="inline-block mt-3 text-xs font-medium text-blue-700 hover:underline"
