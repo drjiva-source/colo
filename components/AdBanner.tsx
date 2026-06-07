@@ -13,19 +13,19 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
   
   // Configuración de tamaños
   const sizeConfig = {
-    leaderboard: { w: "w-full max-w-[728px] mx-auto", h: "" }, // ← h vacío para evitar error
+    leaderboard: { w: "w-full max-w-[728px] mx-auto", h: "" },
     skyscraper: { w: "w-[300px]", h: "h-[600px]" },
     rectangle: { w: "w-full md:w-[400px]", h: "h-[250px]" },
   };
 
   const size = sizeConfig[variant];
 
-  // Lógica para Leaderboard (Responsive Nativo)
+  // Lógica para Leaderboard (Responsive Nativo con objectFit: contain)
   if (variant === 'leaderboard' && imageSrc) {
     return (
       <div className="flex flex-col gap-2">
         <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>
-        <div className={`${size.w} rounded-lg shadow-sm overflow-hidden`}>
+        <div className={`${size.w} rounded-lg shadow-sm overflow-hidden px-2`}>
            <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
              <Image
                 src={imageSrc}
@@ -33,6 +33,7 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
                 width={728}
                 height={90}
                 className="w-full h-auto"
+                style={{ objectFit: 'contain' }} // ← Escala para mostrar TODO el banner
                 priority
              />
            </Link>
