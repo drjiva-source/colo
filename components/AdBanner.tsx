@@ -12,7 +12,9 @@ interface AdBannerProps {
 
 export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Publicidad" }: AdBannerProps) {
   
+  // ✅ Agregamos leaderboard con valores vacíos para evitar error de TypeScript
   const sizeConfig = {
+    leaderboard: { w: "", h: "" }, // ← No se usa, pero evita el error
     skyscraper: { w: "w-[300px]", h: "h-[600px]" },
     rectangle: { w: "w-full md:w-[400px]", h: "h-[250px]" },
   };
