@@ -20,18 +20,17 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
 
   const size = sizeConfig[variant];
 
-  // 👉 LÓGICA LEADERBOARD
+  // 👉 LÓGICA LEADERBOARD (CON FORZADO CSS)
   if (variant === 'leaderboard') {
     return (
-      <div className="w-full max-w-[728px] mx-auto px-2">
-        <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center block mb-2">{label}</span>
+      <div className="w-full flex flex-col items-center justify-center px-2 py-2">
+        <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-2">{label}</span>
         
-        {/* Desktop: 728x90 - SOLO desktop (lg+ = 1024px+) */}
+        {/* 🖥️ DESKTOP: Se oculta siempre en móvil, se muestra SIEMPRE en pantallas md+ */}
         {imageSrc && (
-          <div className="hidden lg:block">
+          <div className="hidden md:!block w-full max-w-[728px]">
             <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
               <Image
-                key="desktop-banner"  // ← Key único
                 src={imageSrc}
                 alt="Publicidad Desktop"
                 width={728}
@@ -43,34 +42,25 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
           </div>
         )}
 
-        {/* Móvil: 320x100 - SOLO móvil (< 1024px) */}
+        {/* 📱 MÓVIL: Se muestra siempre en móvil, se oculta SIEMPRE en pantallas md+ */}
         {mobileImageSrc && (
-          <div className="block lg+:hidden">
+          <div className="block md:!hidden w-full max-w-[320px]">
             <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
               <Image
-                key="mobile-banner"  // ← Key único
                 src={mobileImageSrc}
                 alt="Publicidad Móvil"
                 width={320}
                 height={100}
                 className="w-full h-auto rounded-lg shadow-sm"
-                priority
               />
             </Link>
-          </div>
-        )}
-
-        {/* Fallback */}
-        {!imageSrc && !mobileImageSrc && (
-          <div className="w-full h-[90px] bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
-            <span>Espacio disponible</span>
           </div>
         )}
       </div>
     );
   }
 
-  // 👉 LÓGICA SKYSCRAPER Y RECTANGLE (sin cambios)
+  // 👉 LÓGICA SKYSCRAPER Y RECTANGLE
   const content = imageSrc ? (
     <div className={`relative w-full ${size.h} group`}>
       <Image 
@@ -83,7 +73,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
     </div>
   ) : (
     <div className={`w-full ${size.h} bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 p-4 text-center gap-2`}>
-      <span className="text-3xl">📢</span>
+      <span className="text-3xl"></span>
       <span className="font-bold text-gray-500 uppercase tracking-wider text-sm">Espacio Disponible</span>
       <span className="text-xs text-gray-400">
         {variant === 'skyscraper' ? '300 x 600' : '400 x 250'}
@@ -103,7 +93,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
 
   return (
     <div className={`flex flex-col gap-2 ${variant === 'skyscraper' ? 'sticky top-24' : ''}`}>
-      {!imageSrc && <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center block">{label}</span>}
+      {!imageSrc && <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>}
       
       <Wrapper>
         <div className={`${size.w} overflow-hidden relative bg-white shadow-sm rounded-lg mx-auto`}>
