@@ -11,34 +11,48 @@ interface AdBannerProps {
 
 export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBannerProps) {
   
-  // ✅ CAMBIO AQUÍ: Configuración de tamaños responsiva
-  const sizes = {
-    leaderboard: "100vw", 
-    skyscraper: "300px",
-    rectangle: "100vw",
-  };
-
+  // Configuración de tamaños
+  // Para leaderboard usamos max-w para centrarlo y que no sea gigante en PC
   const sizeConfig = {
-    // Leaderboard: h-auto en móvil (para no cortar), h-[90px] en PC (md:)
-    leaderboard: { w: "w-full", h: "h-auto md:h-[90px] max-w-[728px] mx-auto" }, 
+    leaderboard: { w: "w-full max-w-[728px] mx-auto" }, 
     skyscraper: { w: "w-[300px]", h: "h-[600px]" },
-    rectangle: { w: "w-[300px] md:w-[400px]", h: "h-[250px]" }, // Rectangle un poco más grande en PC también si querés
+    rectangle: { w: "w-full md:w-[400px]", h: "h-[250px]" }, // 400px en PC, completo en móvil
   };
 
   const size = sizeConfig[variant];
 
-  // Contenido visual
+  // Lógica para Leaderboard (Responsive Nativo)
+  // Usamos width/height fijos y dejamos que CSS escale la imagen proporcionalmente.
+  // Esto evita que se recorten los bordes en móviles.
+  if (variant === 'leaderboard' && imageSrc) {
+    return (
+      <div className="flex flex-col gap-2">
+        <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>
+        <div className={`${size.w} rounded-lg shadow-sm overflow-hidden`}>
+           <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
+             <Image
+                src={imageSrc}
+                alt="Publicidad"
+                width={728}
+                height={90}
+                className="w-full h-auto" // ← Clave: Mantiene proporción y no corta
+                priority // ← Mejora la carga al ser el primer elemento visible
+             />
+           </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Lógica para Skyscraper y Rectangle (Fill)
   const content = imageSrc ? (
     <div className={`relative w-full ${size.h} group`}>
       <Image 
         src={imageSrc} 
         alt="Publicidad" 
-        fill
-        sizes={sizes[variant]}
-        // ✅ CAMBIO AQUÍ: object-contain en móvil (para ver todo el banner), cover en PC
-        className={`rounded-lg shadow-sm transition-transform group-hover:scale-[1.02] ${
-          variant === 'leaderboard' ? 'object-contain md:object-cover' : 'object-cover'
-        }`} 
+        fill 
+        sizes={variant === 'skyscraper' ? '300px' : '100vw'}
+        className={`rounded-lg shadow-sm transition-transform group-hover:scale-[1.02] object-cover`} 
       />
     </div>
   ) : (
@@ -47,7 +61,7 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
       <span className="text-3xl">📢</span>
       <span className="font-bold text-gray-500 uppercase tracking-wider text-sm">Espacio Disponible</span>
       <span className="text-xs text-gray-400">
-        {variant === 'leaderboard' ? '728 x 90' : variant === 'skyscraper' ? '300 x 600' : '300 x 250'}
+        {variant === 'leaderboard' ? '728 x 90' : variant === 'skyscraper' ? '300 x 600' : '400 x 250'}
       </span>
       <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded mt-2 font-medium">¡Tu marca aquí!</span>
     </div>
@@ -65,10 +79,9 @@ export function AdBanner({ variant, imageSrc, href, label = "Publicidad" }: AdBa
   );
 
   return (
-    // ✅ CAMBIO AQUÍ: Sticky solo para skyscraper
     <div className={`flex flex-col gap-2 ${variant === 'skyscraper' ? 'sticky top-24' : ''}`}>
       {/* Etiqueta pequeña */}
-      <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>
+      {!imageSrc && <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>}
       
       <Wrapper>
         <div className={`${size.w} overflow-hidden relative bg-white shadow-sm rounded-lg`}>
