@@ -35,48 +35,64 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-      
-      {/* 🔹 COLUMNA IZQUIERDA: Contenido Principal */}
-      <div className="lg:col-span-8 flex flex-col gap-10">
-        {featured ? (
-          <FeaturedNewsHero news={featured} />
-        ) : (
-          <div className="p-6 bg-gray-100 rounded-xl text-center">
-            <p className="text-gray-600">Cargando noticias...</p>
-          </div>
-        )}
-        {/* ✅ CategoriesBar eliminada */}
-        <NewsSection title="Tendencias" items={trending} />
-        <NewsSection title="Más Leídas" items={mostRead} />
+    <>
+      {/* 🔝 LEADERBOARD SUPERIOR - ZZ AUTOMORES (Full Width) */}
+      <div className="bg-white py-4 border-b border-gray-100">
+        <AdBanner 
+          variant="leaderboard"
+          imageSrc="/ads/zz-automores-desktop.jpg"
+          mobileImageSrc="/ads/zz-automores-movil.jpg"
+          href="https://zzautomores.com"
+          label="Patrocinado"
+        />
       </div>
-      
-      {/* 🔹 COLUMNA DERECHA: Sidebar */}
-      <aside className="lg:col-span-4 flex flex-col gap-8">
-        
-        {/* Banner Superior */}
-        <AdBanner 
-          variant="rectangle" 
-          label="Patrocinado" 
-          imageSrc="/ads/mara.jpg" 
-          href="https://maradeohogar.com.ar" 
-        />
-        
-        {/* Widget de Efemérides */}
-        <EfemeridesWidget />
-        
-        {/* Newsletter */}
-        <Newsletter />
-        
-        {/* Banner Inferior */}
-        <AdBanner 
-          variant="skyscraper" 
-          label="Publicidad" 
-          imageSrc="/ads/crishop-300x600.jpg" 
-          href="https://crishop.com" 
-        />
-        
-      </aside>
-    </div>
+
+      {/* 📰 GRID PRINCIPAL */}
+      <div className="container mx-auto px-4 py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          
+          {/* 🔹 COLUMNA IZQUIERDA: Contenido Principal */}
+          <div className="lg:col-span-8 flex flex-col gap-10">
+            {featured ? (
+              <FeaturedNewsHero news={featured} />
+            ) : (
+              <div className="p-6 bg-gray-100 rounded-xl text-center">
+                <p className="text-gray-600">Cargando noticias...</p>
+              </div>
+            )}
+            {/* ✅ CategoriesBar eliminada */}
+            <NewsSection title="Tendencias" items={trending} />
+            <NewsSection title="Más Leídas" items={mostRead} />
+          </div>
+          
+          {/* 🔹 COLUMNA DERECHA: Sidebar */}
+          <aside className="lg:col-span-4 flex flex-col gap-8">
+            
+            {/* Banner Rectangle - MaRa */}
+            <AdBanner 
+              variant="rectangle" 
+              label="Patrocinado" 
+              imageSrc="/ads/mara.jpg" 
+              href="https://maradeohogar.com.ar" 
+            />
+            
+            {/* Widget de Efemérides */}
+            <EfemeridesWidget />
+            
+            {/* Newsletter */}
+            <Newsletter />
+            
+            {/* Banner Skyscraper - Crishop */}
+            <AdBanner 
+              variant="skyscraper" 
+              label="Publicidad" 
+              imageSrc="/ads/crishop-300x600.jpg" 
+              href="https://crishop.com" 
+            />
+            
+          </aside>
+        </div>
+      </div>
+    </>
   );
 }
