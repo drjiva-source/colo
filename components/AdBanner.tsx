@@ -51,7 +51,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
                 alt="Publicidad Móvil"
                 width={320}
                 height={100}
-                className="w-full h-auto rounded-lg shadow-sm"
+                className="w-full h-auto"
               />
             </Link>
           </div>
