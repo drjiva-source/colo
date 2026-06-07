@@ -35,7 +35,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
                 alt="Publicidad Desktop"
                 width={728}
                 height={90}
-                className="w-full h-auto rounded-lg shadow-sm"
+                className="w-full h-auto"
                 priority
               />
             </Link>
@@ -51,7 +51,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
                 alt="Publicidad Móvil"
                 width={320}
                 height={100}
-                className="w-full h-auto"
+                className="w-full h-auto rounded-lg shadow-sm"
               />
             </Link>
           </div>
