@@ -26,11 +26,12 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
       <div className="w-full max-w-[728px] mx-auto px-2">
         <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center block mb-2">{label}</span>
         
-        {/* Desktop: 728x90 - SOLO desktop, SOLO si existe imageSrc */}
+        {/* Desktop: 728x90 - SOLO desktop (lg+ = 1024px+) */}
         {imageSrc && (
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
               <Image
+                key="desktop-banner"  // ← Key único
                 src={imageSrc}
                 alt="Publicidad Desktop"
                 width={728}
@@ -42,11 +43,12 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
           </div>
         )}
 
-        {/* Móvil: 320x100 - SOLO móvil, SOLO si existe mobileImageSrc */}
+        {/* Móvil: 320x100 - SOLO móvil (< 1024px) */}
         {mobileImageSrc && (
-          <div className="block md:hidden">
+          <div className="block lg+:hidden">
             <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
               <Image
+                key="mobile-banner"  // ← Key único
                 src={mobileImageSrc}
                 alt="Publicidad Móvil"
                 width={320}
@@ -58,17 +60,17 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
           </div>
         )}
 
-        {/* Fallback: Si no hay ninguna imagen, mostrar placeholder gris */}
+        {/* Fallback */}
         {!imageSrc && !mobileImageSrc && (
-          <div className="w-full h-[90px] md:h-[90px] bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
-            <span className="text-sm font-medium">Espacio disponible 728x90</span>
+          <div className="w-full h-[90px] bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
+            <span>Espacio disponible</span>
           </div>
         )}
       </div>
     );
   }
 
-  // 👉 LÓGICA SKYSCRAPER Y RECTANGLE
+  // 👉 LÓGICA SKYSCRAPER Y RECTANGLE (sin cambios)
   const content = imageSrc ? (
     <div className={`relative w-full ${size.h} group`}>
       <Image 
@@ -86,7 +88,6 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
       <span className="text-xs text-gray-400">
         {variant === 'skyscraper' ? '300 x 600' : '400 x 250'}
       </span>
-      <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded mt-2 font-medium">¡Tu marca aquí!</span>
     </div>
   );
 

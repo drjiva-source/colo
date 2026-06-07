@@ -36,16 +36,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 🔝 LEADERBOARD SUPERIOR - ZZ AUTOMORES (Full Width) */}
-      <div className="bg-white py-4 border-b border-gray-100">
-        <AdBanner 
-          variant="leaderboard"
-          imageSrc="/ads/zz3-728x90.jpg"
-          mobileImageSrc="/ads/zz3-320x100.jpg"
-          href="https://zzautomores.com"
-          label="Patrocinado"
-        />
-      </div>
+      {/* 🔥 ELIMINADO: Bloque del Leaderboard Superior (Ya está en layout.tsx) */}
 
       {/* 📰 GRID PRINCIPAL */}
       <div className="container mx-auto px-4 py-8 lg:py-12">
@@ -60,7 +51,7 @@ export default async function HomePage() {
                 <p className="text-gray-600">Cargando noticias...</p>
               </div>
             )}
-            {/* ✅ CategoriesBar eliminada */}
+            
             <NewsSection title="Tendencias" items={trending} />
             <NewsSection title="Más Leídas" items={mostRead} />
           </div>
