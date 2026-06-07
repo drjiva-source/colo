@@ -40,8 +40,8 @@ export default async function HomePage() {
       <div className="bg-white py-4 border-b border-gray-100">
         <AdBanner 
           variant="leaderboard"
-          imageSrc="/ads/zz-automores-desktop.jpg"
-          mobileImageSrc="/ads/zz-automores-movil.jpg"
+          imageSrc="/ads/zz3-728x90.jpg"
+          mobileImageSrc="/ads/zz3-320x100.jpg"
           href="https://zzautomores.com"
           label="Patrocinado"
         />
