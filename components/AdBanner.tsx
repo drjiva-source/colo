@@ -20,13 +20,13 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
 
   const size = sizeConfig[variant];
 
-  // 👉 LÓGICA LEADERBOARD (CON FORZADO CSS)
+  // 👉 LÓGICA LEADERBOARD
   if (variant === 'leaderboard') {
     return (
       <div className="w-full flex flex-col items-center justify-center px-2 py-2">
         <span className="text-[10px] text-gray-400 uppercase tracking-wider mb-2">{label}</span>
         
-        {/* 🖥️ DESKTOP: Se oculta siempre en móvil, se muestra SIEMPRE en pantallas md+ */}
+        {/* Desktop */}
         {imageSrc && (
           <div className="hidden md:!block w-full max-w-[1280px]">
             <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
@@ -42,7 +42,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
           </div>
         )}
 
-        {/* 📱 MÓVIL: Se muestra siempre en móvil, se oculta SIEMPRE en pantallas md+ */}
+        {/* Móvil */}
         {mobileImageSrc && (
           <div className="block md:!hidden w-full max-w-[320px]">
             <Link href={href || "#"} target={href ? "_blank" : "_self"} rel="noopener noreferrer">
@@ -60,7 +60,57 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
     );
   }
 
-  // 👉 LÓGICA SKYSCRAPER Y RECTANGLE
+  // 👉 LÓGICA RECTANGLE (con soporte móvil)
+  if (variant === 'rectangle') {
+    return (
+      <div className={`flex flex-col gap-2 ${size.w} mx-auto`}>
+        {!imageSrc && !mobileImageSrc && (
+          <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>
+        )}
+        
+        {/* Desktop: 400x250 */}
+        {imageSrc && (
+          <div className="hidden md:block relative w-full h-[250px] group">
+            <Link href={href || "#"} target={href ? "_blank" : "_self"} className="block w-full h-full" rel="noopener noreferrer">
+              <Image 
+                src={imageSrc}
+                alt="Publicidad Desktop"
+                fill
+                sizes="400px"
+                className="rounded-lg shadow-sm transition-transform group-hover:scale-[1.02] object-cover"
+              />
+            </Link>
+          </div>
+        )}
+
+        {/* Móvil: 320x100 (o la que necesites) */}
+        {mobileImageSrc && (
+          <div className="block md:hidden relative w-full h-[100px] group">
+            <Link href={href || "#"} target={href ? "_blank" : "_self"} className="block w-full h-full" rel="noopener noreferrer">
+              <Image 
+                src={mobileImageSrc}
+                alt="Publicidad Móvil"
+                fill
+                sizes="100vw"
+                className="rounded-lg shadow-sm transition-transform group-hover:scale-[1.02] object-cover"
+              />
+            </Link>
+          </div>
+        )}
+
+        {/* Fallback */}
+        {!imageSrc && !mobileImageSrc && (
+          <div className="w-full h-[250px] md:h-[250px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 p-4 text-center">
+            <span className="text-3xl">📢</span>
+            <span className="font-bold text-gray-500 uppercase tracking-wider text-sm mt-2">Espacio Disponible</span>
+            <span className="text-xs text-gray-400">400 x 250</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // 👉 LÓGICA SKYSCRAPER (se mantiene igual)
   const content = imageSrc ? (
     <div className={`relative w-full ${size.h} group`}>
       <Image 
@@ -73,7 +123,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
     </div>
   ) : (
     <div className={`w-full ${size.h} bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 p-4 text-center gap-2`}>
-      <span className="text-3xl"></span>
+      <span className="text-3xl">📢</span>
       <span className="font-bold text-gray-500 uppercase tracking-wider text-sm">Espacio Disponible</span>
       <span className="text-xs text-gray-400">
         {variant === 'skyscraper' ? '300 x 600' : '400 x 250'}
