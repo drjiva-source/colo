@@ -60,11 +60,14 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
     );
   }
 
-    // 👉 LÓGICA RECTANGLE (Blindada contra aplastamiento)
+      // 👉 LÓGICA RECTANGLE (Blindada contra aplastamiento)
   if (variant === 'rectangle') {
+    // Determinar si hay alguna imagen disponible
+    const hasImage = imageSrc || mobileImageSrc;
+    
     return (
       <div className="w-full mx-auto flex-shrink-0">
-        {!imageSrc && !mobileImageSrc && (
+        {!hasImage && (
           <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center block mb-2">{label}</span>
         )}
         
@@ -83,12 +86,12 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
           </div>
         )}
 
-        {/* Móvil: Fallback a imageSrc si no hay mobileImageSrc */}
-        {(mobileImageSrc || imageSrc) && (
+        {/* Móvil: Solo se renderiza si hay mobileImageSrc O imageSrc */}
+        {hasImage && (
           <div className="block md:hidden relative w-full h-[180px] group">
             <Link href={href || "#"} className="block w-full h-full" rel="noopener noreferrer">
               <Image 
-                src={mobileImageSrc || imageSrc}
+                src={mobileImageSrc || imageSrc!}  // ✅ El ! le dice a TS que es seguro
                 alt="Publicidad Móvil"
                 fill
                 sizes="100vw"
@@ -99,7 +102,7 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
         )}
 
         {/* Fallback placeholder */}
-        {!imageSrc && !mobileImageSrc && (
+        {!hasImage && (
           <div className="w-full h-[250px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 p-4 text-center">
             <span className="text-3xl">📢</span>
             <span className="font-bold text-gray-500 uppercase tracking-wider text-sm mt-2">Espacio Disponible</span>
