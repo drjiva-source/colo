@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { CATEGORIES } from "@/lib/constants"; // ✅ Import correcto
+import { CATEGORIES } from "@/lib/constants";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,7 +44,8 @@ export function Header() {
               
               {/* Títulos */}
               <div className="flex flex-col leading-none">
-                <h1 className="text-lg md:text-2xl font-black tracking-tight text-white group-hover:text-gray-100 transition-colors">
+                {/* ✅ CAMBIO: Agregada font-oswald y font-bold */}
+                <h1 className="font-oswald text-lg md:text-2xl font-bold tracking-tight text-white group-hover:text-gray-100 transition-colors">
                   EL COLO SIN FILTRO
                 </h1>
                 <span className="text-[10px] md:text-xs font-medium text-white/90 tracking-widest mt-1">
