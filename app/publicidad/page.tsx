@@ -189,7 +189,7 @@ export default function PublicidadPage() {
             ✉️ Escribinos por Email
           </a>
           <a 
-            href="https://wa.me/549XXXXXXXXXX" 
+            href="https://wa.me/5493704638xxx" 
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition shadow-lg hover:shadow-xl"
