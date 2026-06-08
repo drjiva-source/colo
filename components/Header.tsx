@@ -11,7 +11,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-red-600 text-white shadow-md">
+      <header className="sticky top-0 z-50 w-full bg-red-600 text-white shadow-lg shadow-red-900/20">
         <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
           
           {/* Lado Izquierdo: Menú + Logo + Títulos */}
@@ -44,7 +44,6 @@ export function Header() {
               
               {/* Títulos */}
               <div className="flex flex-col leading-none">
-                {/* ✅ CAMBIO: Agregada font-oswald y font-bold */}
                 <h1 className="font-oswald text-lg md:text-2xl font-bold tracking-tight text-white group-hover:text-gray-100 transition-colors">
                   EL COLO SIN FILTRO
                 </h1>
