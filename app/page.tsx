@@ -36,9 +36,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 🔥 ELIMINADO: Bloque del Leaderboard Superior (Ya está en layout.tsx) */}
-
-      {/* 📰 GRID PRINCIPAL */}
+      {/*  GRID PRINCIPAL */}
       <div className="container mx-auto px-4 py-8 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
@@ -59,21 +57,27 @@ export default async function HomePage() {
           {/* 🔹 COLUMNA DERECHA: Sidebar */}
           <aside className="lg:col-span-4 flex flex-col gap-8">
             
-            {/* Banner Rectangle - MaRa */}
-            <AdBanner 
-              variant="rectangle" 
-              label="Patrocinado" 
-              imageSrc="/ads/mara.jpg" 
-              href="https://maradeohogar.com.ar" 
-            />
-            
-            {/* Widget de Efemérides */}
-            <EfemeridesWidget />
-            
-            {/* Newsletter */}
-            <Newsletter />
-            
-            {/* Banner Skyscraper - Crishop */}
+            {/* ✅ NUEVO: Panel Contenedor (Fondo Gris Suave) */}
+            {/* Agrupa MaRa, Efemérides y Newsletter en una caja integrada */}
+            <div className="bg-gray-50 rounded-xl border border-gray-100 p-4 flex flex-col gap-6">
+              
+              {/* Banner Rectangle - MaRa */}
+              <AdBanner 
+                variant="rectangle" 
+                label="Patrocinado" 
+                imageSrc="/ads/mara.jpg" 
+                href="https://maradeohogar.com.ar" 
+              />
+              
+              {/* Widget de Efemérides */}
+              <EfemeridesWidget />
+              
+              {/* Newsletter */}
+              <Newsletter />
+              
+            </div>
+
+            {/* Banner Skyscraper - Crishop (Se mantiene afuera para no estirar la caja) */}
             <AdBanner 
               variant="skyscraper" 
               label="Publicidad" 
