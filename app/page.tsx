@@ -36,7 +36,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/*  GRID PRINCIPAL */}
+      {/* 📰 GRID PRINCIPAL */}
       <div className="container mx-auto px-4 py-8 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
@@ -57,15 +57,15 @@ export default async function HomePage() {
           {/* 🔹 COLUMNA DERECHA: Sidebar */}
           <aside className="lg:col-span-4 flex flex-col gap-8">
             
-            {/* ✅ NUEVO: Panel Contenedor (Fondo Gris Suave) */}
-            {/* Agrupa MaRa, Efemérides y Newsletter en una caja integrada */}
-            <div className="bg-gray-50 rounded-xl border border-gray-100 p-4 flex flex-col gap-6">
+            {/* ✅ Panel Contenedor (Widgets agrupados) */}
+            <div className="bg-gray-50 rounded-xl border border-gray-100 p-4 flex flex-col gap-6 w-full">
               
-              {/* Banner Rectangle - MaRa */}
+              {/* Banner MaRa - MaRa Deco & Hogar */}
               <AdBanner 
                 variant="rectangle" 
                 label="Patrocinado" 
                 imageSrc="/ads/mara.jpg" 
+                mobileImageSrc="/ads/mara.jpg" // Temporal: misma imagen hasta crear versión móvil
                 href="https://maradeohogar.com.ar" 
               />
               
@@ -77,7 +77,7 @@ export default async function HomePage() {
               
             </div>
 
-            {/* Banner Skyscraper - Crishop (Se mantiene afuera para no estirar la caja) */}
+            {/* Banner Skyscraper - Crishop (fuera del panel) */}
             <AdBanner 
               variant="skyscraper" 
               label="Publicidad" 

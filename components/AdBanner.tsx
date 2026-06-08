@@ -60,47 +60,47 @@ export function AdBanner({ variant, imageSrc, mobileImageSrc, href, label = "Pub
     );
   }
 
-  // 👉 LÓGICA RECTANGLE (con soporte móvil)
+    // 👉 LÓGICA RECTANGLE (Blindada contra aplastamiento)
   if (variant === 'rectangle') {
     return (
-      <div className={`flex flex-col gap-2 ${size.w} mx-auto`}>
+      <div className="w-full mx-auto flex-shrink-0">
         {!imageSrc && !mobileImageSrc && (
-          <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center">{label}</span>
+          <span className="text-[10px] text-gray-400 uppercase tracking-wider text-center block mb-2">{label}</span>
         )}
         
         {/* Desktop: 400x250 */}
         {imageSrc && (
           <div className="hidden md:block relative w-full h-[250px] group">
-            <Link href={href || "#"} target={href ? "_blank" : "_self"} className="block w-full h-full" rel="noopener noreferrer">
+            <Link href={href || "#"} className="block w-full h-full" rel="noopener noreferrer">
               <Image 
                 src={imageSrc}
                 alt="Publicidad Desktop"
                 fill
                 sizes="400px"
-                className="rounded-lg shadow-sm transition-transform group-hover:scale-[1.02] object-cover"
+                className="rounded-lg shadow-sm object-cover"
               />
             </Link>
           </div>
         )}
 
-        {/* Móvil: 320x100 (o la que necesites) */}
-        {mobileImageSrc && (
-          <div className="block md:hidden relative w-full h-[100px] group">
-            <Link href={href || "#"} target={href ? "_blank" : "_self"} className="block w-full h-full" rel="noopener noreferrer">
+        {/* Móvil: Fallback a imageSrc si no hay mobileImageSrc */}
+        {(mobileImageSrc || imageSrc) && (
+          <div className="block md:hidden relative w-full h-[180px] group">
+            <Link href={href || "#"} className="block w-full h-full" rel="noopener noreferrer">
               <Image 
-                src={mobileImageSrc}
+                src={mobileImageSrc || imageSrc}
                 alt="Publicidad Móvil"
                 fill
                 sizes="100vw"
-                className="rounded-lg shadow-sm transition-transform group-hover:scale-[1.02] object-cover"
+                className="rounded-lg shadow-sm object-cover"
               />
             </Link>
           </div>
         )}
 
-        {/* Fallback */}
+        {/* Fallback placeholder */}
         {!imageSrc && !mobileImageSrc && (
-          <div className="w-full h-[250px] md:h-[250px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 p-4 text-center">
+          <div className="w-full h-[250px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-400 p-4 text-center">
             <span className="text-3xl">📢</span>
             <span className="font-bold text-gray-500 uppercase tracking-wider text-sm mt-2">Espacio Disponible</span>
             <span className="text-xs text-gray-400">400 x 250</span>
