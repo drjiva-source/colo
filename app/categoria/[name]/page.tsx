@@ -75,14 +75,18 @@ export default async function CategoryPage({ params }: { params: { name: string 
           <aside className="lg:w-[300px] shrink-0 space-y-8">
             
             {/* SKYSCRAPER - Solo en Locales y Economía */}
-            {(name === 'locales' || name === 'economia') && (
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                <AdBanner 
-                  variant="skyscraper" 
-                  label="Destacado"
-                />
-              </div>
-            )}
+            {/* SKYSCRAPER - Solo en Locales y Economía */}
+            {['locales', 'economia'].includes(name) && (
+             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+               <AdBanner
+                 variant="skyscraper"
+                 label="Destacado"
+                 imageSrc="/ads/crishop2.jpg" // 👈 ACÁ AGREGAMOS TU IMAGEN
+                 href="https://crishop.com"   // 👈 Verificá que este sea el link correcto
+    />
+  </div>
+)}
+            
 
             {/* Newsletter placeholder */}
             <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 text-center">
