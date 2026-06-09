@@ -198,8 +198,8 @@ export default async function NewsPage({ params }: NewsPageProps) {
                     <AdBanner 
                       variant="rectangle" 
                       label="Patrocinado"
-                      // Cuando tengas el auspiciante, descomentá:
                       imageSrc="/ads/estudio-juridico.jpg"
+                      mobileImageSrc="/ads/estudio-juridico-320x100.jpg"
                       // href="https://estudiojuridico.com"
                     />
                   </div>
