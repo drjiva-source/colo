@@ -12,10 +12,11 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full bg-red-600 text-white shadow-lg shadow-red-900/20">
-        <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
+        {/* ✅ Header más alto: h-20 md:h-24 (antes h-16 md:h-20) */}
+        <div className="container mx-auto flex h-20 md:h-24 items-center justify-between px-4">
           
           {/* Lado Izquierdo: Menú + Logo + Títulos */}
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-3 md:gap-5">
             
             {/* Menú Hamburguesa (Móvil) */}
             <button 
@@ -30,9 +31,9 @@ export function Header() {
               </svg>
             </button>
 
-            <Link href="/" className="flex items-center gap-3 group">
-              {/* Logo */}
-              <div className="relative w-10 h-10 md:w-12 md:h-12 shrink-0">
+            <Link href="/" className="flex items-center gap-3 md:gap-5 group">
+              {/* ✅ Logo más grande: w-12 h-12 md:w-14 md:h-14 (antes w-10 h-10 md:w-12 md:h-12) */}
+              <div className="relative w-12 h-12 md:w-14 md:h-14 shrink-0">
                 <Image 
                   src="/logo.png" 
                   alt="Logo El Colo Sin Filtro" 
