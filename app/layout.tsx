@@ -1,34 +1,27 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Inter, Oswald, Playfair_Display } from "next/font/google";
+import { Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Header } from "@/components/Header";
 import { AdBanner } from "@/components/AdBanner";
 import { Footer } from "@/components/Footer";
 import { RadioPlayer } from "@/components/RadioPlayer";
+import { SplashScreen } from "@/components/SplashScreen";
 
-// ✅ Inter para interfaz (texto general, botones, etc.)
+// ✅ Inter para texto general
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
 });
 
-// ✅ Oswald para el logo "EL COLO SIN FILTRO"
+// ✅ Oswald para el logo
 const oswald = Oswald({
   subsets: ["latin"],
-  weight: ["600", "700"], // SemiBold y Bold
+  weight: ["600", "700"],
   display: "swap",
   variable: "--font-oswald",
-});
-
-// ✅ Playfair Display para titulares de noticias (opcional)
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["700", "800", "900"], // Bold, ExtraBold, Black
-  display: "swap",
-  variable: "--font-playfair",
 });
 
 export const metadata: Metadata = {
@@ -43,12 +36,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body className={`${inter.variable} ${oswald.variable} ${playfair.variable} antialiased bg-background text-foreground`}>
+      <body className={`${inter.variable} ${oswald.variable} antialiased bg-background text-foreground`}>
         
-        {/* 🔝 Header Principal */}
+        {/* 🔥 Splash Screen de bienvenida */}
+        <SplashScreen />
+        
+        {/* 🔝 Header */}
         <Header />
         
-        {/*  Banner Leaderboard */}
+        {/* 📢 Banner Leaderboard */}
         <div className="w-full bg-gray-50 px-0">
           <AdBanner 
             variant="leaderboard"
@@ -59,7 +55,7 @@ export default function RootLayout({
           />
         </div>
         
-        {/* 📰 Contenido de las páginas */}
+        {/* 📰 Contenido principal */}
         <main className="container mx-auto py-8 px-4 min-h-screen pb-20">
           {children}
         </main>
