@@ -33,7 +33,7 @@ export function Header() {
 
             <Link href="/" className="flex items-center gap-3 md:gap-5 group">
               {/* ✅ Logo más grande: w-12 h-12 md:w-14 md:h-14 (antes w-10 h-10 md:w-12 md:h-12) */}
-              <div className="relative w-12 h-12 md:w-14 md:h-14 shrink-0">
+              <div className="relative w-14 h-14 md:w-16 md:h-16 shrink-0">
                 <Image 
                   src="/logo.png" 
                   alt="Logo El Colo Sin Filtro" 
