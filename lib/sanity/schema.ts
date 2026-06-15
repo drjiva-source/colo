@@ -95,9 +95,9 @@ export const radioStreamSchema = defineType({
     defineField({
       name: "streamUrl",
       title: "URL del Stream Principal (Lunes a Sábado)",
-      type: "url",
+      type: "string",
       description: "Stream de música durante la semana",
-      initialValue: "https://streaming.live365.com/a98981",
+      initialValue: "https://ssl.radiosnethosting.com/index.php?port=8114",
       validation: (rule) => rule.required().error("La URL del stream es requerida"),
     }),
     defineField({
@@ -118,7 +118,7 @@ export const radioStreamSchema = defineType({
     defineField({
       name: "sundayStreamUrl",
       title: "URL del Stream Dominical",
-      type: "url",
+      type: "string",
       description: "Stream alternativo para los domingos (Radioterapia)",
       initialValue: "http://37.157.242.101:14456",
     }),
