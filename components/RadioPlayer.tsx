@@ -15,10 +15,8 @@ export function RadioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [config, setConfig] = useState<RadioConfig | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
-  const [useIframe, setUseIframe] = useState(false); // Fallback a iframe
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -55,9 +53,10 @@ export function RadioPlayer() {
               tagline: data.tagline,
             });
           }
+          console.log('✅ Radio config cargada:', data.stationName);
         }
       } catch (error) {
-        console.error("Error fetching radio config:", error);
+        console.error("❌ Error fetching radio config:", error);
       }
     }
 
@@ -65,83 +64,59 @@ export function RadioPlayer() {
   }, []);
 
   useEffect(() => {
-    if (audioRef.current && !useIframe) {
+    if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
     }
-  }, [volume, isMuted, useIframe]);
+  }, [volume, isMuted]);
 
   const togglePlay = async () => {
-    if (!config) return;
-    setError(null);
+    if (!config || !audioRef.current) return;
 
     if (isPlaying) {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      audioRef.current.pause();
       setIsPlaying(false);
+      console.log('⏸️ Radio pausada');
     } else {
       setIsLoading(true);
+      console.log('▶️ Intentando reproducir:', config.streamUrl);
       
-      // 🎯 URLs específicas para RadioNet
-      const baseUrl = config.streamUrl;
-      const urlsToTry = [
-        // Formato estándar
-        baseUrl,
-        // RadioNet formatos comunes
-        `${baseUrl}/stream`,
-        `${baseUrl}/;`,
-        `${baseUrl}/listen.mp3`,
-        `${baseUrl}/stream.mp3`,
-        // HTTP si HTTPS falla
-        baseUrl.replace('https://', 'http://'),
-        baseUrl.replace('https://', 'http://') + '/stream',
-        baseUrl.replace('https://', 'http://') + '/;',
-        // Extrayendo puerto de la URL original
-        baseUrl.includes('port=') 
-          ? `http://ssl.radiosnethosting.com:${baseUrl.split('port=')[1]}/stream`
-          : null,
-        baseUrl.includes('port=')
-          ? `http://ssl.radiosnethosting.com:${baseUrl.split('port=')[1]}/;`
-          : null,
-      ].filter(Boolean); // Eliminar nulls
-
-      console.log('🎵 URLs a probar:', urlsToTry);
-
-      let played = false;
-      
-      for (const url of urlsToTry) {
-        if (!url || !audioRef.current) continue;
+      try {
+        // Limpiar src anterior
+        audioRef.current.src = '';
+        audioRef.current.load();
+        
+        // Pequeño delay para asegurar carga
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        audioRef.current.src = config.streamUrl;
+        audioRef.current.load();
+        
+        const playPromise = audioRef.current.play();
+        
+        if (playPromise !== undefined) {
+          await playPromise;
+          console.log('✅ Radio reproduciendo');
+          setIsPlaying(true);
+        }
+      } catch (error) {
+        console.error('❌ Error al reproducir:', error);
+        // Intentar con HTTP si HTTPS falla
+        const httpUrl = config.streamUrl.replace('https://', 'http://');
+        console.log('🔄 Intentando con HTTP:', httpUrl);
         
         try {
-          console.log('🔄 Probando:', url);
-          audioRef.current.src = url;
+          audioRef.current.src = httpUrl;
           audioRef.current.load();
-          
-          const playPromise = audioRef.current.play();
-          const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 3000)
-          );
-          
-          await Promise.race([playPromise, timeoutPromise]);
-          
-          console.log('✅ Funciona con:', url);
-          played = true;
-          break;
-        } catch (e: any) {
-          console.log('❌ Falló:', url, e.message);
-          continue;
+          await audioRef.current.play();
+          console.log('✅ Radio reproduciendo (HTTP)');
+          setIsPlaying(true);
+        } catch (httpError) {
+          console.error('❌ Error HTTP también:', httpError);
+          alert('No se pudo conectar a la radio. Verificá la URL en Sanity.');
         }
+      } finally {
+        setIsLoading(false);
       }
-
-      if (!played) {
-        console.warn('⚠️ Ninguna URL funcionó, usando iframe fallback');
-        setUseIframe(true);
-        setIsPlaying(true);
-      } else {
-        setIsPlaying(true);
-      }
-      
-      setIsLoading(false);
     }
   };
 
@@ -155,11 +130,12 @@ export function RadioPlayer() {
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
+    console.log(isMuted ? '🔊 Sonido activado' : '🔇 Silenciado');
   };
 
   const handleOnError = (e: any) => {
-    console.error("Error de audio:", e);
-    // No cambiar estado aquí, el fallback ya se maneja en togglePlay
+    console.error("❌ Error de audio:", e);
+    setIsPlaying(false);
   };
 
   if (!config) {
@@ -181,63 +157,63 @@ export function RadioPlayer() {
     >
       <div className="container mx-auto flex items-center justify-between px-4">
         
+        {/* Info de la Radio */}
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="flex items-center gap-1.5">
-            <span className={`block w-2.5 h-2.5 rounded-full ${isPlaying ? "bg-red-500 animate-pulse" : "bg-gray-500"}`}></span>
+            <span className={`block w-2.5 h-2.5 rounded-full ${isPlaying ? "bg-green-500 animate-pulse" : "bg-gray-500"}`}></span>
             <span className="text-xs font-bold uppercase tracking-wider text-gray-300 hidden sm:block">
-              {isPlaying ? "En Vivo" : error ? "Error" : "Radio Offline"}
+              {isPlaying ? "En Vivo" : "Listo"}
             </span>
           </div>
           
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-bold text-white truncate">{config.stationName}</span>
-            <span className="text-xs text-gray-400 truncate">
-              {error || config.tagline}
-            </span>
+            <span className="text-xs text-gray-400 truncate">{config.tagline}</span>
           </div>
         </div>
 
+        {/* Controles */}
         <div className="flex items-center gap-3 md:gap-4">
           
-          {/* Control de Volumen (solo si no es iframe) */}
-          {!useIframe && (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={toggleMute}
-                className="p-1 hover:bg-gray-700 rounded transition"
-                aria-label={isMuted ? "Activar sonido" : "Silenciar"}
-              >
-                {isMuted || volume === 0 ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <line x1="23" y1="9" x2="17" y2="15"></line>
-                    <line x1="17" y1="9" x2="23" y2="15"></line>
-                  </svg>
-                ) : volume < 0.5 ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                  </svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                  </svg>
-                )}
-              </button>
-              
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={isMuted ? 0 : volume}
-                onChange={handleVolumeChange}
-                className="w-20 md:w-24 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-red-600"
-                aria-label="Volumen"
-              />
-            </div>
-          )}
+          {/* Control de Volumen - SIEMPRE VISIBLE */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleMute}
+              className="p-1 hover:bg-gray-700 rounded transition"
+              aria-label={isMuted ? "Activar sonido" : "Silenciar"}
+              title={isMuted ? "Activar sonido" : "Silenciar"}
+            >
+              {isMuted || volume === 0 ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                </svg>
+              ) : volume < 0.5 ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+              )}
+            </button>
+            
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={isMuted ? 0 : volume}
+              onChange={handleVolumeChange}
+              className="w-20 md:w-24 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-red-600"
+              aria-label="Volumen"
+              title="Control de volumen"
+            />
+          </div>
 
           {/* Botón Play/Pause */}
           <button
@@ -260,24 +236,12 @@ export function RadioPlayer() {
         </div>
       </div>
 
-      {/* Audio Element (solo si no es iframe) */}
-      {!useIframe && (
-        <audio
-          ref={audioRef}
-          onError={handleOnError}
-          preload="none"
-          crossOrigin="anonymous"
-        />
-      )}
-
-      {/* Iframe Fallback (oculto visualmente pero reproduce audio) */}
-      {useIframe && isPlaying && (
-        <iframe
-          src={config.streamUrl}
-          style={{ display: 'none' }}
-          title="Radio Player"
-        />
-      )}
+      <audio
+        ref={audioRef}
+        onError={handleOnError}
+        preload="none"
+        crossOrigin="anonymous"
+      />
     </div>
   );
 }
