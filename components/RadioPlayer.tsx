@@ -16,7 +16,7 @@ export function RadioPlayer() {
   const [isLoading, setIsLoading] = useState(false);
   const [config, setConfig] = useState<RadioConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [volume, setVolume] = useState(0.8); // Volumen inicial: 80%
+  const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -63,7 +63,6 @@ export function RadioPlayer() {
     fetchRadioConfig();
   }, []);
 
-  // Actualizar volumen cuando cambie
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
@@ -79,18 +78,51 @@ export function RadioPlayer() {
       setIsPlaying(false);
     } else {
       setIsLoading(true);
-      try {
-        audioRef.current.src = config.streamUrl;
-        audioRef.current.load();
-        await audioRef.current.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.error("Error al reproducir radio:", error);
-        setError("No se pudo conectar. Probá de nuevo.");
-        setIsPlaying(false);
-      } finally {
-        setIsLoading(false);
+      
+      // 🎯 Lista de URLs alternativas para probar
+      const urlsToTry = [
+        config.streamUrl, // URL original de Sanity
+        `${config.streamUrl}/stream`,
+        `${config.streamUrl}/;`,
+        `${config.streamUrl}/stream.mp3`,
+        config.streamUrl.replace('https://', 'http://'),
+        config.streamUrl.replace('https://', 'http://') + '/stream',
+        config.streamUrl.replace('https://', 'http://') + '/;',
+      ];
+
+      let played = false;
+      
+      for (const url of urlsToTry) {
+        try {
+          console.log('🔄 Probando URL:', url);
+          audioRef.current.src = url;
+          audioRef.current.load();
+          
+          // Timeout de 5 segundos por URL
+          const playPromise = audioRef.current.play();
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout')), 5000)
+          );
+          
+          await Promise.race([playPromise, timeoutPromise]);
+          
+          console.log('✅ Stream funcionando con:', url);
+          played = true;
+          break;
+        } catch (e) {
+          console.log('❌ URL fallida:', url);
+          continue;
+        }
       }
+
+      if (!played) {
+        setError("No se pudo conectar. Verificá la URL del stream.");
+        setIsPlaying(false);
+      } else {
+        setIsPlaying(true);
+      }
+      
+      setIsLoading(false);
     }
   };
 
@@ -132,7 +164,6 @@ export function RadioPlayer() {
     >
       <div className="container mx-auto flex items-center justify-between px-4">
         
-        {/* Info de la Radio */}
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="flex items-center gap-1.5">
             <span className={`block w-2.5 h-2.5 rounded-full ${isPlaying ? "bg-red-500 animate-pulse" : "bg-gray-500"}`}></span>
@@ -149,10 +180,8 @@ export function RadioPlayer() {
           </div>
         </div>
 
-        {/* Controles */}
         <div className="flex items-center gap-3 md:gap-4">
           
-          {/* Control de Volumen */}
           <div className="flex items-center gap-2">
             <button
               onClick={toggleMute}
@@ -190,7 +219,6 @@ export function RadioPlayer() {
             />
           </div>
 
-          {/* Botón Play/Pause */}
           <button
             onClick={togglePlay}
             disabled={isLoading}
