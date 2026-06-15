@@ -4,7 +4,7 @@ import { Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Header } from "@/components/Header";
-import { AdBanner } from "@/components/AdBanner";
+import { AdBannerSlot } from "@/components/AdBannerSlot"; // 👈 Nuevo import
 import { Footer } from "@/components/Footer";
 import { RadioPlayer } from "@/components/RadioPlayer";
 import { SplashScreen } from "@/components/SplashScreen";
@@ -44,15 +44,9 @@ export default function RootLayout({
         {/* 🔝 Header */}
         <Header />
         
-        {/* 📢 Banner Leaderboard */}
+        {/* 📢 Banner Leaderboard (desde Sanity) */}
         <div className="w-full bg-gray-50 px-0">
-          <AdBanner 
-            variant="leaderboard"
-            imageSrc="/ads/zz3-728x90.jpg"
-            mobileImageSrc="/ads/zz3-320x100.jpg"
-            href="https://zzautomores.com"
-            label="Publicidad"
-          />
+          <AdBannerSlot position="header" />
         </div>
         
         {/* 📰 Contenido principal */}

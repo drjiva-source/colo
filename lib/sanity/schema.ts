@@ -1,8 +1,11 @@
 // lib/sanity/schema.ts
 import { type SchemaTypeDefinition, defineField, defineType } from "sanity";
 import efemeride from './efemeride';
+import { adBannerSchema } from './adBanner';
 
+// ============================================
 // Schema de Noticias
+// ============================================
 export const newsSchema = defineType({
   name: "news",
   title: "Noticias",
@@ -74,7 +77,9 @@ export const newsSchema = defineType({
   ],
 });
 
+// ============================================
 // 🎵 Schema de Configuración de Radio
+// ============================================
 export const radioStreamSchema = defineType({
   name: "radioStream",
   title: "Configuración de Radio",
@@ -135,14 +140,29 @@ export const radioStreamSchema = defineType({
   ],
 });
 
+// ============================================
+// 📢 Schema de Banners Publicitarios
+// ============================================
+// (Definido en ./adBanner.ts e importado al inicio)
+
+// ============================================
 // ✅ Export para Sanity config (importado como `schema`)
+// ============================================
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     newsSchema,
     efemeride,
-    radioStreamSchema, // 👈 Nuevo schema agregado
+    radioStreamSchema,
+    adBannerSchema, // 👈 Banner publicitario agregado
   ],
 };
 
+// ============================================
 // ✅ Export para sanity.config.ts (importado como `schemaTypes`)
-export const schemaTypes = [newsSchema, efemeride, radioStreamSchema];
+// ============================================
+export const schemaTypes = [
+  newsSchema, 
+  efemeride, 
+  radioStreamSchema, 
+  adBannerSchema, // 👈 Banner publicitario agregado
+];

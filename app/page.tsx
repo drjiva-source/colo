@@ -7,7 +7,7 @@ import {
 
 import { FeaturedNewsHero } from "@/components/FeaturedNewsHero";
 import { NewsSection } from "@/components/NewsSection";
-import { AdBanner } from "@/components/AdBanner";
+import { AdBannerSlot } from "@/components/AdBannerSlot"; // 👈 Nuevo import
 import { Newsletter } from "@/components/Newsletter";
 import { EfemeridesWidget } from "@/components/EfemeridesWidget";
 
@@ -60,14 +60,8 @@ export default async function HomePage() {
             {/* ✅ Panel Contenedor (Widgets agrupados) */}
             <div className="bg-gray-50 rounded-xl border border-gray-100 p-4 flex flex-col gap-6 w-full">
               
-              {/* Banner MaRa - MaRa Deco & Hogar */}
-              <AdBanner 
-                variant="rectangle" 
-                label="Patrocinado" 
-                imageSrc="/ads/mara.jpg" 
-                mobileImageSrc="/ads/mara.jpg" // Temporal: misma imagen hasta crear versión móvil
-                href="https://maradeohogar.com.ar" 
-              />
+              {/* Banner Rectangle (desde Sanity) */}
+              <AdBannerSlot position="sidebar-rect" />
               
               {/* Widget de Efemérides */}
               <EfemeridesWidget />
@@ -77,13 +71,8 @@ export default async function HomePage() {
               
             </div>
 
-            {/* Banner Skyscraper - Crishop (fuera del panel) */}
-            <AdBanner 
-              variant="skyscraper" 
-              label="Publicidad" 
-              imageSrc="/ads/crishop-300x600.jpg" 
-              href="https://crishop.com" 
-            />
+            {/* Banner Skyscraper (desde Sanity) */}
+            <AdBannerSlot position="sidebar-sky" />
             
           </aside>
         </div>

@@ -242,3 +242,19 @@ export async function searchNews(query: string, limit = 10) {
     return [];
   }
 }
+// lib/sanity/queries.ts
+
+
+// ... tus otras queries existentes ...
+
+export async function getAdBannerByPosition(position: string) {
+  const query = `*[_type == "adBanner" && position == $position && isActive == true][0] {
+    _id,
+    label,
+    url,
+    "image": image.asset->url,
+    "mobileImage": mobileImage.asset->url
+  }`;
+  
+  return await client.fetch(query, { position });
+}
