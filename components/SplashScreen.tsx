@@ -8,7 +8,6 @@ export function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Verificar si ya se mostró en esta sesión
     const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
     
     if (hasSeenSplash) {
@@ -16,7 +15,6 @@ export function SplashScreen() {
       return;
     }
 
-    // Ocultar después de 3 segundos
     const timer = setTimeout(() => {
       setIsVisible(false);
       sessionStorage.setItem('hasSeenSplash', 'true');
@@ -32,11 +30,12 @@ export function SplashScreen() {
       {/* Fondo con imagen de la localidad */}
       <div className="absolute inset-0">
         <Image
-          src="/splash-bg.jpg" // 👈 Tu foto de El Colorado
+          src="/ads/splash-bg.jpg" // ✅ CORREGIDO: Agregué /ads/
           alt="El Colorado - Formosa"
           fill
           className="object-cover opacity-30"
           priority
+          sizes="100vw"
         />
         {/* Overlay degradado */}
         <div className="absolute inset-0 bg-gradient-to-br from-red-600/90 to-red-800/90" />
@@ -52,6 +51,7 @@ export function SplashScreen() {
             fill
             className="object-contain drop-shadow-2xl"
             priority
+            sizes="200px"
           />
         </div>
 
