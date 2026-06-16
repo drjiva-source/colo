@@ -93,3 +93,13 @@ body {
 .animate-bounce-slow {
   animation: bounceSlow 2s ease-in-out infinite;
 }
+
+/* Animación de ondas de radio */
+@keyframes wave {
+  0%, 100% {
+    height: 40%;
+  }
+  50% {
+    height: 100%;
+  }
+}
