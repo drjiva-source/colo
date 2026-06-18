@@ -54,13 +54,17 @@ export default function ContactoPage() {
           </div>
         </div>
 
-        {/* Formulario de contacto */}
+        {/* Formulario de contacto con Formspree */}
         <div className="bg-white rounded-lg shadow-md p-8">
           <h2 className="text-2xl font-bold mb-6 text-red-600 font-oswald">
             Envianos un mensaje
           </h2>
 
-          <form className="space-y-4">
+          <form 
+            action="https://formspree.io/f/xeewwbqd"
+            method="POST"
+            className="space-y-4"
+          >
             <div>
               <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
                 Nombre completo *
