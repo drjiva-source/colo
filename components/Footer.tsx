@@ -130,7 +130,7 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-blue-800/50 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-blue-300/50">
           <p>© {new Date().getFullYear()} El Colo Sin Filtro. Todos los derechos reservados.</p>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-white transition">Política de Privacidad</Link>
+            <Link href="/politica-de-privacidad" className="hover:text-white transition">Política de Privacidad</Link>
             <Link href="#" className="hover:text-white transition">Términos de Uso</Link>
             <Link href="#" className="hover:text-white transition">Mapa del Sitio</Link>
           </div>
