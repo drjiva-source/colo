@@ -85,8 +85,7 @@ export function RadioPlayer() {
         audioRef.current.load();
         await new Promise(resolve => setTimeout(resolve, 50));
         
-        audioRef.current.src = config.streamUrl;
-        audioRef.current.crossOrigin = "anonymous";
+        audioRef.current.src = '/api/stream';
         audioRef.current.load();
         
         const playPromise = audioRef.current.play();
@@ -97,21 +96,8 @@ export function RadioPlayer() {
         await Promise.race([playPromise, timeoutPromise]);
         setIsPlaying(true);
       } catch (err) {
-        if (config.streamUrl.startsWith('https://')) {
-          try {
-            const httpUrl = config.streamUrl.replace('https://', 'http://');
-            audioRef.current.src = httpUrl;
-            audioRef.current.load();
-            await audioRef.current.play();
-            setIsPlaying(true);
-          } catch {
-            setError("No se pudo conectar");
-            setIsPlaying(false);
-          }
-        } else {
-          setError("No se pudo conectar");
-          setIsPlaying(false);
-        }
+        setError("No se pudo conectar");
+        setIsPlaying(false);
       } finally {
         setIsLoading(false);
       }
