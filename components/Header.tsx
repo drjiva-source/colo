@@ -41,10 +41,13 @@ export function Header() {
                 />
               </div>
               
-              {/* Títulos */}
+              {/* Títulos en 2 líneas */}
               <div className="flex flex-col leading-none">
-                <h1 className="font-oswald text-lg md:text-2xl font-bold tracking-tight text-white group-hover:text-gray-100 transition-colors">
-                  EL COLO SIN FILTRO
+                <h1 className="font-oswald text-2xl md:text-3xl font-black tracking-tight text-white group-hover:text-gray-100 transition-colors">
+                  EL COLO
+                </h1>
+                <h1 className="font-oswald text-2xl md:text-3xl font-black tracking-tight text-white group-hover:text-gray-100 transition-colors">
+                  SIN FILTRO
                 </h1>
                 <span className="text-[10px] md:text-xs font-medium text-white/90 tracking-widest mt-1">
                   EL COLORADO - FORMOSA
