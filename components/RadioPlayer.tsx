@@ -85,7 +85,7 @@ export function RadioPlayer() {
         audioRef.current.load();
         await new Promise(resolve => setTimeout(resolve, 50));
         
-        audioRef.current.src = '/api/stream';
+        audioRef.current.src = `/api/stream?url=${encodeURIComponent(config.streamUrl)}`;
         audioRef.current.load();
         
         const playPromise = audioRef.current.play();

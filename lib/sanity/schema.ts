@@ -96,7 +96,7 @@ export const radioStreamSchema = defineType({
       name: "streamUrl",
       title: "URL del Stream Principal (Lunes a Sábado)",
       type: "string",
-      description: "Stream de música durante la semana",
+      description: "Radio Parque - Música las 24 horas",
       initialValue: "https://ssl.radiosnethosting.com/index.php?port=8114",
       validation: (rule) => rule.required().error("La URL del stream es requerida"),
     }),
@@ -105,7 +105,7 @@ export const radioStreamSchema = defineType({
       title: "Nombre de la Emisora (Lunes a Sábado)",
       type: "string",
       description: "Nombre que se muestra de lunes a sábado",
-      initialValue: "La Nación Música 104.9",
+      initialValue: "Radio Parque",
     }),
     defineField({
       name: "tagline",
@@ -119,7 +119,7 @@ export const radioStreamSchema = defineType({
       name: "sundayStreamUrl",
       title: "URL del Stream Dominical",
       type: "string",
-      description: "Stream alternativo para los domingos (Radioterapia)",
+      description: "Radioterapia - Programa dominical",
       initialValue: "http://37.157.242.101:14456",
     }),
     defineField({
@@ -153,7 +153,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     newsSchema,
     efemeride,
     radioStreamSchema,
-    adBannerSchema, // 👈 Banner publicitario agregado
+    adBannerSchema,
   ],
 };
 
@@ -164,5 +164,5 @@ export const schemaTypes = [
   newsSchema, 
   efemeride, 
   radioStreamSchema, 
-  adBannerSchema, // 👈 Banner publicitario agregado
+  adBannerSchema,
 ];
