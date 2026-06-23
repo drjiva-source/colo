@@ -7,7 +7,7 @@ import {
 
 import { FeaturedNewsHero } from "@/components/FeaturedNewsHero";
 import { NewsSection } from "@/components/NewsSection";
-import { AdBannerSlot } from "@/components/AdBannerSlot"; // 👈 Nuevo import
+import { AdBannerSlot } from "@/components/AdBannerSlot";
 import { Newsletter } from "@/components/Newsletter";
 import { EfemeridesWidget } from "@/components/EfemeridesWidget";
 
@@ -36,6 +36,9 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* ✅ BANNER EN HEADER (Leaderboard) */}
+      <AdBannerSlot position="header" />
+      
       {/* 📰 GRID PRINCIPAL */}
       <div className="container mx-auto px-4 py-8 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">

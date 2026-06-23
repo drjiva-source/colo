@@ -95,15 +95,13 @@ export async function getAllCategories() {
   return CATEGORIES.map(cat => ({ name: cat.name, slug: cat.slug }));
 }
 
-// 👉 Noticias por categoría específica (VERSIÓN COMPATIBLE - SIN lower())
+// 👉 Noticias por categoría específica
 export async function getNewsByCategory(categorySlug: CategorySlug, limit = 10) {
   console.log(`🔍 [Query] getNewsByCategory - Buscando: ${categorySlug}`);
   
-  // Mapeamos slug → nombre (ej: "locales" → "Locales")
   const category = CATEGORIES.find(c => c.slug === categorySlug);
   const categoryName = category?.name || categorySlug;
 
-  // Query simple y 100% compatible con todas las versiones de GROQ
   const query = `*[_type == "news" && category == $category && defined(slug.current)] | order(_createdAt desc)[0...${limit}] {
     _id, 
     title, 
@@ -117,9 +115,7 @@ export async function getNewsByCategory(categorySlug: CategorySlug, limit = 10) 
   }`;
 
   try {
-    // revalidate: 0 para desarrollo: ve cambios al instante
     const result = await client.fetch(query, { category: categoryName }, { next: { revalidate: 0 } });
-    
     console.log(`✅ [Query] Noticias en "${categoryName}":`, result?.length || 0);
     return result || [];
   } catch (error) {
@@ -151,7 +147,7 @@ export async function getRelatedArticles(currentSlug: string, category: string, 
   }
 }
 
-// 👉 Efemérides del día actual (CORREGIDA - match flexible por fecha)
+// 👉 Efemérides del día actual
 export async function getEfemeridesHoy() {
   console.log('🔍 [Query] getEfemeridesHoy - INICIANDO');
   
@@ -162,7 +158,6 @@ export async function getEfemeridesHoy() {
     
     console.log(`📅 [Query] Buscando efemérides para: ${dia}/${mes}`);
     
-    // Match flexible: busca cualquier fecha que termine en "-06-03"
     const query = `*[_type == "efemeride" && fecha match $fecha] | order(destacada desc, _createdAt desc) {
       _id,
       titulo,
@@ -175,7 +170,7 @@ export async function getEfemeridesHoy() {
     }`;
 
     const result = await client.fetch(query, { 
-      fecha: `*-${mes}-${dia}` // Ej: "*-06-03" → matchea "2024-06-03", "1990-06-03", etc.
+      fecha: `*-${mes}-${dia}`
     });
     
     console.log(`✅ [Query] getEfemeridesHoy - Encontradas:`, result?.length || 0);
@@ -242,19 +237,23 @@ export async function searchNews(query: string, limit = 10) {
     return [];
   }
 }
-// lib/sanity/queries.ts
 
-
-// ... tus otras queries existentes ...
-
+// ============================================
+// 📢 Banners Publicitarios
+// ============================================
 export async function getAdBannerByPosition(position: string) {
-  const query = `*[_type == "adBanner" && position == $position && isActive == true][0] {
-    _id,
-    label,
-    url,
-    "image": image.asset->url,
-    "mobileImage": mobileImage.asset->url
-  }`;
-  
-  return await client.fetch(query, { position });
+  try {
+    const query = `*[_type == "adBanner" && position == $position && isActive == true][0]{
+      "image": image.asset->url,
+      "mobileImage": mobileImage.asset->url,
+      url,
+      label
+    }`;
+    
+    const banner = await client.fetch(query, { position });
+    return banner;
+  } catch (err) {
+    console.error(`❌ Error al cargar banner ${position}:`, err);
+    return null;
+  }
 }
