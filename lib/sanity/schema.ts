@@ -120,7 +120,7 @@ export const radioStreamSchema = defineType({
       title: "URL del Stream Dominical",
       type: "string",
       description: "Radioterapia - Programa dominical",
-      initialValue: "http://37.157.242.101:14456",
+      initialValue: "http://37.157.242.101:14456/;stream.nsv",
     }),
     defineField({
       name: "sundayStationName",
