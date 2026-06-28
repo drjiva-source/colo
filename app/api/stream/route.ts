@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge'; // Usar Edge Runtime para mejor compatibilidad
+export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -11,42 +11,65 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Hacer fetch al stream
+    console.log('📻 Proxy conectando a:', streamUrl);
+
     const response = await fetch(streamUrl, {
       method: 'GET',
       headers: {
-        'Accept': 'audio/mpeg, audio/*',
+        'Accept': 'audio/*, */*',
+        'Icy-MetaData': '1',
       },
+      redirect: 'follow',
     });
 
     if (!response.ok) {
-      throw new Error(`Stream responded with ${response.status}`);
+      console.error('❌ Error del stream:', response.status, response.statusText);
+      throw new Error(`Stream error: ${response.status}`);
     }
 
-    // Obtener el tipo de contenido del stream
-    const contentType = response.headers.get('content-type') || 'audio/mpeg';
-
-    // Crear headers de respuesta
+    // Obtener el tipo de contenido real del stream
+    const contentType = response.headers.get('content-type') || 'audio/aac';
+    
+    // Crear headers optimizados
     const headers = new Headers({
       'Content-Type': contentType,
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Range',
+      'Access-Control-Allow-Headers': 'Content-Type, Range, Icy-MetaData',
       'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Accept-Ranges': 'bytes',
+      'Connection': 'keep-alive',
     });
 
-    // Devolver el stream
+    // Copiar headers de metadata del stream si existen
+    response.headers.forEach((value, key) => {
+      const lowerKey = key.toLowerCase();
+      if (lowerKey.includes('icy-') || 
+          lowerKey === 'content-length' || 
+          lowerKey === 'content-range') {
+        headers.set(key, value);
+      }
+    });
+
+    console.log('✅ Stream conectado:', contentType);
+
     return new NextResponse(response.body, {
+      status: response.status,
+      statusText: response.statusText,
       headers,
     });
   } catch (error) {
-    console.error('❌ Error en proxy de radio:', error);
-    return new NextResponse(`Error al cargar el stream: ${error instanceof Error ? error.message : 'Unknown error'}`, { 
-      status: 500,
-      headers: {
-        'Content-Type': 'text/plain',
+    console.error('❌ Error en proxy:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    return new NextResponse(
+      JSON.stringify({ error: 'Failed to connect to stream', details: errorMessage }),
+      { 
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
       }
-    });
+    );
   }
 }
 
@@ -56,7 +79,7 @@ export async function OPTIONS() {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Range',
+      'Access-Control-Allow-Headers': 'Content-Type, Range, Icy-MetaData',
     },
   });
 }
